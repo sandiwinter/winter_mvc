@@ -6,7 +6,7 @@
  * @version 1.0
  *
  * @author Sandi Winter
- * @link https://github.com/winter_mvc
+ * @link https://github.com/sandiwinter/winter_mvc
  */
 if ( ! class_exists( 'MVC_Loader' ) ):
 

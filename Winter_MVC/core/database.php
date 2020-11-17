@@ -6,7 +6,7 @@
  * @version 1.0
  *
  * @author Sandi Winter, simplified CodeIgniter DB query builder library
- * @link https://github.com/winter_mvc
+ * @link https://github.com/sandiwinter/winter_mvc
  */
 if ( ! class_exists( 'MVC_Database' ) ):
 
