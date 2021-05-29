@@ -15,9 +15,9 @@ class MVC_Database {
     /**
      * wpdb
      *
-     * @var array
+     * @var object
      */
-	protected $wpdb = array();
+	protected $wpdb = NULL;
 	
 	protected $query_array = array();
 
@@ -298,6 +298,10 @@ class MVC_Database {
 					elseif(substr($col, -2) == ' >')
 					{
 						$sql_query .= '`'.substr($col, 0, -2).'` > \''.$val.'\' AND ';
+                    }
+                    elseif(substr($col, -3) == ' !=')
+					{
+						$sql_query .= '`'.substr($col, 0, -3).'` != \''.$val.'\' AND ';
 					}
 					else
 					{
@@ -358,6 +362,10 @@ class MVC_Database {
 					elseif(substr($col, -2) == ' >')
 					{
 						$sql_query .= '`'.substr($col, 0, -2).'` > \''.$val.'\' AND ';
+                    }
+                    elseif(substr($col, -3) == ' !=')
+					{
+						$sql_query .= '`'.substr($col, 0, -3).'` != \''.$val.'\' AND ';
 					}
 					else
 					{
@@ -534,6 +542,50 @@ class MVC_Database {
 		);
 
 		return $wpdb->insert_id;
+	}
+
+    /*
+    
+    UPDATE mytable SET title = CASE
+    WHEN id = 1 THEN ‘Great Expectations’
+    WHEN id = 2 THEN ‘War and Peace’
+    ...
+    END
+    WHERE id IN (1,2,...)
+
+    */
+
+    public function updateBatch( $table_name, $values, $index)
+	{
+		$ids   = [];
+		$final = [];
+
+		foreach ($values as $val)
+		{
+			$ids[] = $val[$index];
+
+			foreach (array_keys($val) as $field)
+			{
+				if ($field !== $index)
+				{
+					$final[$field][] = 'WHEN ' . $index . ' = ' . $val[$index] . ' THEN ' . $val[$field];
+				}
+			}
+		}
+
+		$cases = '';
+		foreach ($final as $k => $v)
+		{
+			$cases .= $k . " = CASE \n"
+					. implode("\n", $v) . "\n"
+					. 'ELSE ' . $k . ' END, ';
+		}
+
+		$this->where($index . ' IN(' . implode(',', $ids) . ')', null, false);
+
+		$query = 'UPDATE ' . '' . $table_name . ' SET ' . substr($cases, 0, -2) . '';
+
+        $this->query($query);
 	}
 
 

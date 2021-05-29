@@ -19,7 +19,7 @@ if ( ! class_exists( 'Winter_MVC_Model' ) ):
          *
          * @var array
          */
-        protected $db = NULL;
+        private $db = NULL;
 
         public function __construct(){
             global $Winter_MVC;
@@ -91,7 +91,7 @@ if ( ! class_exists( 'Winter_MVC_Model' ) ):
             $this->db->delete($this->_table_name);
         }
 
-        public function update($data = array(), $id)
+        public function update($data = array(), $id=NULL)
         {
             return $this->db->update($this->_table_name, $data, $id, $this->_primary_key);
         }
