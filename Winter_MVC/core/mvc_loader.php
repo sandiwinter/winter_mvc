@@ -99,7 +99,11 @@ class MVC_Loader {
             if(empty($method))
                 $method = 'index';
 
-            return $this->controllers_repository[$class]->$method($params);
+
+
+            return call_user_func_array(array($this->controllers_repository[$class], $method), $params);
+                
+            //return $this->controllers_repository[$class]->$method(extract($params));
 
         }
         else

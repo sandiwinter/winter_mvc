@@ -395,7 +395,7 @@ function wmvc_show_data($field_name, &$db_value = NULL, $default = '')
     <option value="NOT_CONTAINS">NOT_CONTAINS</option>
 </select>
 */
-function wmvc_select_option($field_name, $options = array(), $selected = NULL, $extra)
+function wmvc_select_option($field_name, $options = array(), $selected = NULL, $extra=NULL)
 {
     $output = '<select name="'.$field_name.'" '.$extra.' >';
 
@@ -548,7 +548,9 @@ function wmvc_seconds_to_hms($seconds, $show_days=true) {
     return sprintf('%02d:%02d:%02d', $hours, $minutes, $sec);
 }
 
-function wmvc_xml_encode($array) {
+function wmvc_xml_encode($array)
+{
+
     if (is_null($DOMDocument)) {
         $DOMDocument =new DOMDocument;
         $DOMDocument->formatOutput = true;
@@ -622,7 +624,148 @@ function wmvc_add_wp_image($filename_source)
     return NULL;
 }
 
+function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $texts = array())
+{
+    $current_page = 1;
 
+    if(isset($_GET[$page_var]))
+        $current_page = intval(wmvc_xss_clean($_GET[$page_var]));
+
+    if(!isset($texts['previous_page']))$texts['previous_page'] = 'Previous page';
+    if(!isset($texts['next_page']))$texts['next_page'] = 'Next page';
+    if(!isset($texts['first_page']))$texts['first_page'] = 'First page';
+    if(!isset($texts['last_page']))$texts['last_page'] = 'Last page';
+    if(!isset($texts['items']))$texts['items'] = 'items';
+
+    if(empty($current_page))$current_page = 1;
+
+    // get url
+    $url = strtok($_SERVER["REQUEST_URI"], '?');
+    $qs_parameters = $_GET;
+    unset($qs_parameters[$page_var]);
+    
+    $qs_part = http_build_query($qs_parameters);
+    $url.='?'.$qs_part;
+
+    // total pages
+    $total_pages = intval($total_items/$per_page+0.99);
+
+    $output = '';
+
+    $output.= '<div class="tablenav-pages"><span class="displaying-num">'.$total_pages.' '.$texts['items'].'</span>';
+    $output.= '<span class="pagination-links">';
+    
+    $output.= '<a class="first-page button" href="'.$url.'"><span class="screen-reader-text">'.$texts['first_page'].'</span><span aria-hidden="true">«</span></a>';
+    
+    if($current_page-1 > 0)
+    {
+        $output.= '<a class="prev-page button" href="'.$url.'&amp;paged='.($current_page-1).'"><span class="screen-reader-text">'.$texts['previous_page'].'</span><span aria-hidden="true">‹</span></a>';
+    }
+    else
+    {
+        $output.= '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">‹</span>';
+    }
+
+    $output.= '<span class="screen-reader-text">Current Page</span><span id="table-paging" class="paging-input"><span class="tablenav-paging-text">'.$current_page.' of <span class="total-pages">'.$total_pages.'</span></span></span>';
+    
+    if($current_page+1 <= $total_pages)
+    {
+        $output.= '<a class="next-page button" href="'.$url.'&amp;paged='.($current_page+1).'"><span class="screen-reader-text">'.$texts['next_page'].'</span><span aria-hidden="true">›</span></a>';
+    
+    }
+    else
+    {
+        $output.= '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">›</span>';
+    }
+    
+    $output.= '<a class="last-page button" href="'.$url.'&amp;paged='.$total_pages.'"><span class="screen-reader-text">'.$texts['last_page'].'</span><span aria-hidden="true">»</span></a>';
+    
+    $output.= '</span></div>';
+
+    return $output;
+}
+
+
+
+
+function hmvc_download_file($url, $save_file_loc, $data = array())
+{   
+    // Initialize the cURL session 
+    $ch = curl_init($url); 
+    
+    // Use basename() function to return 
+    // the base name of file  
+    $file_name = basename($url); 
+    
+    // Open file  
+    $fp = fopen($save_file_loc, 'wb'); 
+    
+    // It set an option for a cURL transfer 
+    curl_setopt($ch, CURLOPT_FILE, $fp); 
+    curl_setopt($ch, CURLOPT_HEADER, 0); 
+
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Content-Type: multipart/form-data',
+     ));
+    
+    // Perform a cURL session 
+    $result = curl_exec($ch); 
+
+    // Closes a cURL session and frees all resources 
+    curl_close($ch); 
+    
+    // Close file 
+    fclose($fp); 
+
+    return $result;
+}
+
+function hmvc_api_call($method, $url, $data, $headers = false){
+    $curl = curl_init();
+
+    //$data = 'email=test';
+
+    switch ($method){
+       case "POST":
+          curl_setopt($curl, CURLOPT_POST, 1);
+          if ($data)
+          {
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+
+            if($headers === FALSE)
+                $headers = array('Content-Type: multipart/form-data');
+          }
+             
+          break;
+       case "PUT":
+          curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+          if ($data)
+             curl_setopt($curl, CURLOPT_POSTFIELDS, $data);			 					
+          break;
+       default:
+          if ($data)
+             $url = sprintf("%s?%s", $url, http_build_query($data));
+    }
+    // OPTIONS:
+    curl_setopt($curl, CURLOPT_URL, $url);
+    if(!$headers){
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+           'Content-Type: application/json',
+        ));
+    }else{
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    }
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    // EXECUTE:
+    $result = curl_exec($curl);
+    if(!$result){return FALSE;}
+    curl_close($curl);
+    return $result;
+}
 
 
 ?>
