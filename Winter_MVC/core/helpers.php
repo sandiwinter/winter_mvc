@@ -41,6 +41,12 @@ if ( ! function_exists('resolve_ip'))
         if($ip == 'DISABLED')
             return $ip;
 
+        if (filter_var($ip, FILTER_VALIDATE_IP)) {
+            // $ip is a valid IP address"
+        } else {
+            return '';
+        }
+
         if($ip == '::1')
         {
             return $ip.', local';
