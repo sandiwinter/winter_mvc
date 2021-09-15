@@ -46,7 +46,21 @@ class MVC_Loader {
         require_once WINTER_MVC_PATH.'/core/winter_mvc_model.php';
         require_once WINTER_MVC_PATH.'/core/winter_mvc_controller.php';
 
+        add_action('admin_init', array( $this, 'register_styles' ));
+        add_action('admin_init', array( $this, 'register_scripts' ));
+
         $this->db = MVC_Database::instance();
+    }
+
+    public function register_styles()
+    {
+        wp_enqueue_style('winter_mvc', plugins_url(plugin_basename(WINTER_MVC_PATH).'/assets/css/winter_mvc.css'));
+    }
+
+    public function register_scripts()
+    {
+        wp_register_script( 'wpmediaelement',  plugins_url(plugin_basename(WINTER_MVC_PATH).'/assets/js/jquery.wpmediaelement.js'), false, false, false );
+        wp_register_script( 'wpmediamultiple',  plugins_url(plugin_basename(WINTER_MVC_PATH).'/assets/js/jquery.wpmediamultiple.js'), false, false, false );
     }
     
     public function load_helper($filename)

@@ -19,11 +19,24 @@ class MVC_Input {
     public function post($name = NULL)
     {
         if($name === NULL)
-            return wmvc_xss_clean_array($_POST);
+            return wmvc_xss_clean_array(wmvc_stripslashes_deep($_POST));
 
         if(isset($_POST[$name]))
         {
-            return wmvc_xss_clean($_POST[$name]);
+            return wmvc_xss_clean(stripslashes($_POST[$name]));
+        }
+
+        return NULL;
+    }
+
+    public function get($name = NULL)
+    {
+        if($name === NULL)
+            return wmvc_xss_clean_array($_GET);
+
+        if(isset($_GET[$name]))
+        {
+            return wmvc_xss_clean($_GET[$name]);
         }
 
         return NULL;

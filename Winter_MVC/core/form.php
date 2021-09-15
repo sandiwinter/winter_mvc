@@ -86,11 +86,14 @@ class MVC_Form {
 
     public function messages($extra = 'class="alert alert-danger"', $success_message = NULL, $success_extra = 'class="alert alert-success"')
     {
-        if(!isset($_POST))return FALSE;
-        if(count($_POST)==0)return FALSE;
+        if(!isset($_GET['is_updated'])){
+            if(!isset($_POST))return FALSE;
+            if(count($_POST)==0)return FALSE;
+        }
 
         if($success_message === NULL)
-            $success_message = __('Successfuly saved', 'wmvc_win');
+            $success_message = __('Successfully saved', 'wmvc_win');
+
 
         if(count($this->messages) == 0)
         {

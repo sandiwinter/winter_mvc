@@ -17,9 +17,9 @@ if ( ! class_exists( 'Winter_MVC_Model' ) ):
         /**
          * db object
          *
-         * @var array
+         * @var object
          */
-        private $db = NULL;
+        protected $db = NULL;
 
         public function __construct(){
             global $Winter_MVC;
@@ -126,6 +126,8 @@ if ( ! class_exists( 'Winter_MVC_Model' ) ):
 
             foreach($insert_fields as $key=>$val)
             {
+                if(is_array($val))$val = $val['field'];
+
                 if(isset($data[$val]))
                 {
                     $prepared_data[$val] = $data[$val];
@@ -139,6 +141,42 @@ if ( ! class_exists( 'Winter_MVC_Model' ) ):
             //dump($prepared_data);
 
             return $prepared_data;
+        }
+
+        public function max_order($parent_id = null)
+        {
+            
+            if(empty($parent_id))
+            {
+                // get max order
+                $this->db->select('MAX(`order_index`) as `order`', FALSE);
+            }
+            else
+            {
+                // get max order
+                $this->db->select('MAX(`order_index`) as `order`', FALSE);
+                $this->db->where('parent_id', $parent_id);
+
+                if(!empty($parent_id))
+                    $this->db->or_where($this->_primary_key.' = '.$parent_id, NULL);
+            }
+    
+            $query = $this->db->get($this->_table_name);
+
+            if ($this->db->num_rows() > 0)
+            {
+                $row = $this->db->row();
+            }
+            else
+            {
+                //echo 'SQL problem in get max_order:';
+                //echo $this->db->last_query();
+                //exit();
+
+                return 0;
+            }
+
+            return (int) $row->order;
         }
     
     }

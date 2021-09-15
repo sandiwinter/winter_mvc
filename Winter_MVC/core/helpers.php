@@ -359,15 +359,24 @@ function wmvc_character_limiter($text, $limit)
     return $text;
 }
 
-function wmvc_show_data($field_name, &$db_value = NULL, $default = '')
+function wmvc_show_data($field_name, &$db_value = NULL, $default = '', $xss_clean = TRUE)
 {
     if(isset($_POST[$field_name]))
-        return wmvc_xss_clean($_POST[$field_name]);
+    {
+        if($xss_clean === FALSE)
+            return stripslashes($_POST[$field_name]);
+
+        return wmvc_xss_clean(stripslashes($_POST[$field_name]));
+    }
+        
 
     if(is_array($db_value))
     {
         if(isset($db_value[$field_name]))
         {
+            if($xss_clean === FALSE)
+                return $db_value[$field_name];
+
             return wmvc_xss_clean($db_value[$field_name]);
         }
         else
@@ -380,6 +389,9 @@ function wmvc_show_data($field_name, &$db_value = NULL, $default = '')
     {
         if(isset($db_value->$field_name))
         {
+            if($xss_clean === FALSE)
+                return $db_value->$field_name;
+
             return wmvc_xss_clean($db_value->$field_name);
         }
         else
@@ -389,7 +401,15 @@ function wmvc_show_data($field_name, &$db_value = NULL, $default = '')
     }
 
     if(!empty($db_value))
+    {
+        if($xss_clean === FALSE)
+            return $db_value;
+
         return wmvc_xss_clean($db_value);  
+    }
+        
+    if($xss_clean === FALSE)
+        return $default;
 
     return wmvc_xss_clean($default);
 }
@@ -401,9 +421,12 @@ function wmvc_show_data($field_name, &$db_value = NULL, $default = '')
     <option value="NOT_CONTAINS">NOT_CONTAINS</option>
 </select>
 */
-function wmvc_select_option($field_name, $options = array(), $selected = NULL, $extra=NULL)
+function wmvc_select_option($field_name, $options = array(), $selected = NULL, $extra=NULL, $empty_text = NULL, $empty_val = '')
 {
     $output = '<select name="'.$field_name.'" '.$extra.' >';
+
+    if(!is_null($empty_text))
+        $output.= '<option value="'.esc_attr($empty_val).'">'.esc_html($empty_text).'</option>';
 
     if(is_array($options) && count($options) > 0)
     foreach($options as $key=>$val)
@@ -414,6 +437,169 @@ function wmvc_select_option($field_name, $options = array(), $selected = NULL, $
     $output.= '</select>';
 
     return $output;
+}
+
+function wmvc_upload_media($field_name, $image_id)
+{
+    static $media_element_counter = 0;
+        
+    $media_element_counter++;
+    
+    $img_field = $field_name.'_'.$media_element_counter;
+    
+    wp_enqueue_script(  'wpmediaelement' );
+    wp_enqueue_media();
+
+    ?>
+    <div id="<?php echo esc_attr($field_name); ?>meta-box-id" class="postbox-upload">
+    <?php
+    // Get WordPress' media upload URL
+    $upload_link = '#';
+    
+    // Get the image src
+    $your_img_src = wp_get_attachment_image_src( $image_id, 'full' );
+
+    // For convenience, see if the array is valid
+    $you_have_img = is_array( $your_img_src );
+    ?>
+    
+    <!-- Your image container, which can be manipulated with js -->
+    <div class="custom-img-container">
+        <?php if ( $you_have_img ) : ?>
+            <img src="<?php echo esc_html($your_img_src[0]); ?>" alt="..." style="max-width:100%;" class="thumbnail"/>
+        <?php endif; ?>
+    </div>
+    
+    <?php //if(sw_user_in_role('administrator')):  ?>
+    <!-- Your add & remove image links -->
+    <p class="hide-if-no-js">
+        <a class="upload-custom-img <?php if ( $you_have_img  ) { echo 'hidden'; } ?>" 
+        href="<?php echo esc_url($upload_link) ?>">
+            <?php echo esc_html__('Select image','winter_mvc') ?>
+        </a>
+        <a class="delete-custom-img <?php if ( ! $you_have_img  ) { echo 'hidden'; } ?>" 
+        href="#">
+            <?php echo esc_html__('Remove image','winter_mvc') ?>
+        </a>
+    </p>
+    <?php //endif; ?>
+    
+    <!-- A hidden input to set and post the chosen image id -->
+    <input class="logo_image_id" type="hidden" id="<?php echo esc_html(esc_html($field_name)); ?>" name="<?php echo esc_html($field_name); ?>" value="<?php echo esc_html($image_id); ?>" />
+    </div>
+    
+    <?php
+    $custom_js ='';
+    $custom_js .=" jQuery(function($) {
+                        if( typeof jQuery.fn.wpMediaElement == 'function')
+                            $('#".esc_js($field_name)."meta-box-id.postbox-upload').wpMediaElement();
+                    });";
+    
+    echo "<script>".$custom_js."</script>";
+
+    ?>
+
+    <?php
+}
+
+function wmvc_upload_multiple($field_name, $image_ids='')
+{
+    static $media_element_counter = 0;
+        
+    $media_element_counter++;
+    
+    $img_field = $field_name.'_'.$media_element_counter;
+    
+    wp_enqueue_script(  'wpmediamultiple' );
+    wp_enqueue_media();
+
+    ?>
+    <div id="<?php echo esc_attr($field_name); ?>meta-box-id" class="postbox-upload-multiple">
+    <?php
+    // Get WordPress' media upload URL
+    $upload_link = '#';
+    
+    
+    // Get the image src
+
+    $your_img_src = array();
+
+    foreach(explode(',', $image_ids) as $image_id)
+    {
+        if(is_numeric($image_id))
+        $your_img_src[$image_id] = wp_get_attachment_image_src( $image_id, 'full' );
+    }
+    
+
+    // For convenience, see if the array is valid
+    $you_have_img = count($your_img_src) > 0;
+    ?>
+
+    <!-- Your image container, which can be manipulated with js -->
+    <div class="custom-img-container wdk-media">
+        <?php if($you_have_img)foreach($your_img_src as $image_id => $img_src) : ?>
+            <div class="wdk-media-card" data-media-id="<?php echo esc_attr($image_id);?>">
+                <img src="<?php echo esc_html($img_src[0]); ?>" alt="..." style="max-width:100%;" class="thumbnail"/>
+                <a href="#" class="remove"></a>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <br style="clear:both;" />
+    
+    <?php //if(sw_user_in_role('administrator')): ?>
+    <!-- Your add & remove image links -->
+    <p class="hide-if-no-js">
+        <a class="button button-primary upload-custom-img <?php if ( $you_have_img  ) { echo ''; } ?>" 
+        href="<?php echo esc_url($upload_link) ?>">
+            <?php echo esc_html__('Add images','winter_mvc') ?>
+        </a>
+        <a class="button button-secondary delete-custom-img <?php if ( ! $you_have_img  ) { echo 'hidden'; } ?>" 
+        href="#">
+            <?php echo esc_html__('Remove images','winter_mvc') ?>
+        </a>
+    </p>
+    <?php //endif; ?>
+    
+    <!-- A hidden input to set and post the chosen image id -->
+    <input class="logo_image_id" type="hidden" id="<?php echo esc_html(esc_html($field_name)); ?>" name="<?php echo esc_html($field_name); ?>" value="<?php echo esc_html($image_ids); ?>" />
+    </div>
+    <?php
+    $custom_js ='';
+    $custom_js .=" jQuery(function($) {
+                        if( typeof jQuery.fn.wpMediaMultiple == 'function')
+                            $('#".esc_js($field_name)."meta-box-id.postbox-upload-multiple').wpMediaMultiple();
+                            /* order */
+                            var re_order = function(media_elent){
+                                var list_media = '';
+                                media_elent.find('.wdk-media-card').each(function(){
+                                    if(list_media !='')
+                                        list_media +=',';
+
+                                    list_media += $(this).attr('data-media-id');
+                                })
+                                media_elent.closest('.postbox-upload-multiple').find('.logo_image_id').val(list_media);
+                            }
+                            /* Sort table */
+                            $( '.wdk-media' ).sortable({
+                                update: function(event, ui) {
+                                    re_order($(this));
+                                }
+                            });
+                            /* remove media */
+                            $( '.wdk-media' ).find('.wdk-media-card .remove').on('click', function(e){
+                                e.preventDefault();
+                                var media = $(this).closest('.wdk-media')
+                                $(this).closest('.wdk-media-card').remove();
+                                re_order(media)
+                            })
+                        });
+                    ";
+    
+    echo "<script>".$custom_js."</script>";
+
+    ?>
+
+    <?php
 }
 
 function wmvc_select_radio($field_name, $options = array(), $selected = NULL)
@@ -482,7 +668,7 @@ function wmvc_xss_clean($data)
     }
     while ($old_data !== $data);
 
-    $data = sanitize_text_field($data);
+    //$data = sanitize_textarea_field($data);
 
     // we are done...
     return $data;
@@ -658,7 +844,7 @@ function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $te
 
     $output = '';
 
-    $output.= '<div class="tablenav-pages"><span class="displaying-num">'.$total_pages.' '.$texts['items'].'</span>';
+    $output.= '<div class="tablenav-pages"><span class="displaying-num">'.$total_items.' '.$texts['items'].'</span>';
     $output.= '<span class="pagination-links">';
     
     $output.= '<a class="first-page button" href="'.$url.'"><span class="screen-reader-text">'.$texts['first_page'].'</span><span aria-hidden="true">«</span></a>';
@@ -692,9 +878,13 @@ function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $te
 }
 
 
-
-
+// depracticated
 function hmvc_download_file($url, $save_file_loc, $data = array())
+{
+    return wmvc_download_file($url, $save_file_loc, $data);
+}
+
+function wmvc_download_file($url, $save_file_loc, $data = array())
 {   
     // Initialize the cURL session 
     $ch = curl_init($url); 
@@ -703,6 +893,9 @@ function hmvc_download_file($url, $save_file_loc, $data = array())
     // the base name of file  
     $file_name = basename($url); 
     
+    if(!file_exists(dirname($save_file_loc)))
+        mkdir(dirname($save_file_loc));
+
     // Open file  
     $fp = fopen($save_file_loc, 'wb'); 
     
@@ -729,7 +922,13 @@ function hmvc_download_file($url, $save_file_loc, $data = array())
     return $result;
 }
 
-function hmvc_api_call($method, $url, $data, $headers = false){
+// depracticated
+function hmvc_api_call($method, $url, $data, $headers = false)
+{
+    return wmvc_api_call($method, $url, $data, $headers);
+}
+
+function wmvc_api_call($method, $url, $data, $headers = false){
     $curl = curl_init();
 
     //$data = 'email=test';
@@ -771,6 +970,53 @@ function hmvc_api_call($method, $url, $data, $headers = false){
     if(!$result){return FALSE;}
     curl_close($curl);
     return $result;
+}
+
+// depracticated
+function hmvc_current_edit_url()
+{
+    return wmvc_current_edit_url();
+}
+
+function wmvc_current_edit_url()
+{
+    $query_string_array = $_GET;
+    unset($query_string_array['is_updated']);
+
+    return admin_url("admin.php?".http_build_query($query_string_array));
+}
+
+function wmvc_stripslashes_deep($value)
+{
+    $value = is_array($value) ?
+                array_map('stripslashes_deep', $value) :
+                stripslashes($value);
+
+    return $value;
+}
+
+function wmvc_get_date($datetime = NULL, $default='timestamp') 
+{
+    if(is_null($datetime))
+    {
+        if($default == 'timestamp')
+        {
+            $datetime = current_time('timestamp');
+        }
+        else
+        {
+            return $default;
+        }
+    }
+    else if(!is_numeric($datetime))
+    {
+        $datetime = strtotime($datetime);
+    }
+    
+	$date_format = get_option('date_format');
+	$time_format = get_option('time_format');
+	$date = date("{$date_format} {$time_format}", $datetime);
+	return $date;
 }
 
 

@@ -19,7 +19,7 @@ if ( ! class_exists( 'Winter_MVC_Controller' ) ):
         /**
          * db object
          *
-         * @var array
+         * @var object
          */
         protected $db = NULL;
 

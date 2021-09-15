@@ -1,0 +1,12 @@
+.postbox-upload
+{
+    max-width: 200px;
+}
+
+.postbox-upload-multiple .custom-img-container img
+{
+    width:200px;
+    padding-right:5px;
+    padding-bottom:5px;
+    float:left;
+}

@@ -61,6 +61,8 @@ class MVC_Database {
 	
     public function row()
     {
+        if(!isset($this->wpdb->last_result[0]))return NULL;
+
         // Print last SQL query result
         return $this->wpdb->last_result[0];
     }
@@ -122,9 +124,9 @@ class MVC_Database {
 	 * @param	string	the type of join
 	 * @param	string	whether not to try to escape identifiers
 	 */
-	public function join($ql_part, $escape = NULL)
+	public function join($sql_part, $escape = NULL)
 	{
-		$this->query_array['join'][$ql_part] = $escape;
+		$this->query_array['join'][' JOIN '.$sql_part] = $escape;
 	}
 
 	// --------------------------------------------------------------------
@@ -166,9 +168,9 @@ class MVC_Database {
 	 * @param	mixed
 	 * @param	mixed
 	 */
-	public function or_where($key, $value = NULL)
+	public function or_where($sql_part, $escape = NULL)
 	{
-		$this->query_array['where']['OR '.$key] = $value;
+		$this->query_array['where']['OR '.$sql_part] = $escape;
 	}
 
 	/**
@@ -199,7 +201,7 @@ class MVC_Database {
 	 * @param	string	$side
 	 * @param	bool	$escape
 	 */
-	public function or_like($field, $match = '', $side = 'both', $escape = NULL)
+	public function or_like($sql_part, $escape = NULL)
 	{
 		$this->query_array['like']['OR '.$sql_part] = $escape;
 	}
@@ -343,6 +345,12 @@ class MVC_Database {
 			return;
 		}
 
+		if(isset($this->query_array['join']))
+		{
+			$values_array = array_keys($this->query_array['join']);
+			$sql_query .= implode(" ", $values_array).' ';
+		}
+
 		if(isset($this->query_array['where']))
 		{
 			$sql_query .= 'WHERE ';
@@ -351,7 +359,15 @@ class MVC_Database {
 			{
 				if(empty($val))
 				{
-					$sql_query .= ' '.$col.' AND ';
+                    if(substr($col,0,3) == 'OR ') // remove AND from before if exists
+                    {
+                        if(substr($sql_query, -5) == ' AND ')
+                        {
+                            $sql_query = substr($sql_query, 0, -5);
+                        }
+                    }
+
+                    $sql_query .= ' '.$col.' AND ';
 				}
 				else
 				{
