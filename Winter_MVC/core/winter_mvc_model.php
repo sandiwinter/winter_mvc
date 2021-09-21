@@ -44,7 +44,7 @@ if ( ! class_exists( 'Winter_MVC_Model' ) ):
             {
                 //return NULL;
             }
-            elseif($id != NULL)
+            elseif($id != NULL && is_numeric($id))
             {
                 $filter = $this->_primary_filter;
                 $id = intval($id);
