@@ -536,10 +536,9 @@ function wmvc_upload_multiple($field_name, $image_ids='')
     ?>
 
     <!-- Your image container, which can be manipulated with js -->
-    <div class="custom-img-container wdk-media">
-    <div class="custom-img-container winter_mvc--media">
+    <div class="custom-img-container winter_mvc-media">
         <?php if($you_have_img)foreach($your_img_src as $image_id => $img_src) : ?>
-            <div class="winter_mvc--media-card" data-media-id="<?php echo esc_attr($image_id);?>">
+            <div class="winter_mvc-media-card" data-media-id="<?php echo esc_attr($image_id);?>">
                 <img src="<?php echo esc_html($img_src[0]); ?>" alt="..." style="max-width:100%;" class="thumbnail"/>
                 <a href="#" class="remove"></a>
             </div>
