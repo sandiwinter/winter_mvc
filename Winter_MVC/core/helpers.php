@@ -475,11 +475,11 @@ function wmvc_upload_media($field_name, $image_id)
     <p class="hide-if-no-js">
         <a class="upload-custom-img <?php if ( $you_have_img  ) { echo 'hidden'; } ?>" 
         href="<?php echo esc_url($upload_link) ?>">
-            <?php echo esc_html__('Select image','winter_mvc') ?>
+            <?php echo esc_html__('Select image','wmvc_win') ?>
         </a>
         <a class="delete-custom-img <?php if ( ! $you_have_img  ) { echo 'hidden'; } ?>" 
         href="#">
-            <?php echo esc_html__('Remove image','winter_mvc') ?>
+            <?php echo esc_html__('Remove image','wmvc_win') ?>
         </a>
     </p>
     <?php //endif; ?>
@@ -551,11 +551,11 @@ function wmvc_upload_multiple($field_name, $image_ids='')
     <p class="hide-if-no-js">
         <a class="button button-primary upload-custom-img <?php if ( $you_have_img  ) { echo ''; } ?>" 
         href="<?php echo esc_url($upload_link) ?>">
-            <?php echo esc_html__('Add images','winter_mvc') ?>
+            <?php echo esc_html__('Add images','wmvc_win') ?>
         </a>
         <a class="button button-secondary delete-custom-img <?php if ( ! $you_have_img  ) { echo 'hidden'; } ?>" 
         href="#">
-            <?php echo esc_html__('Remove images','winter_mvc') ?>
+            <?php echo esc_html__('Remove images','wmvc_win') ?>
         </a>
     </p>
     <?php //endif; ?>
