@@ -103,7 +103,7 @@ jQuery.fn.wpMediaMultiple = function (options)
 
         for (var item in attachments) {
             //console.log(attachments[item]);
-            options.imgContainer.append( '<div class="winter_mvc--media-card" data-media-id="'+attachments[item].id+'"><img src="'+attachments[item].url+'" alt="" class="thumbnail"/><a href="#" class="remove"></a></div>' );
+            options.imgContainer.append( '<div class="winter_mvc-media-card" data-media-id="'+attachments[item].id+'"><img src="'+attachments[item].url+'" alt="" class="thumbnail"/><a href="#" class="remove"></a></div>' );
             if (input_values.slice(-1) != ',')
                 input_values += ',';
             
