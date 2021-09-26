@@ -537,8 +537,9 @@ function wmvc_upload_multiple($field_name, $image_ids='')
 
     <!-- Your image container, which can be manipulated with js -->
     <div class="custom-img-container wdk-media">
+    <div class="custom-img-container winter_mvc--media">
         <?php if($you_have_img)foreach($your_img_src as $image_id => $img_src) : ?>
-            <div class="wdk-media-card" data-media-id="<?php echo esc_attr($image_id);?>">
+            <div class="winter_mvc--media-card" data-media-id="<?php echo esc_attr($image_id);?>">
                 <img src="<?php echo esc_html($img_src[0]); ?>" alt="..." style="max-width:100%;" class="thumbnail"/>
                 <a href="#" class="remove"></a>
             </div>
@@ -571,7 +572,7 @@ function wmvc_upload_multiple($field_name, $image_ids='')
                             /* order */
                             var re_order = function(media_elent){
                                 var list_media = '';
-                                media_elent.find('.wdk-media-card').each(function(){
+                                media_elent.find('.winter_mvc-media-card').each(function(){
                                     if(list_media !='')
                                         list_media +=',';
 
@@ -580,16 +581,16 @@ function wmvc_upload_multiple($field_name, $image_ids='')
                                 media_elent.closest('.postbox-upload-multiple').find('.logo_image_id').val(list_media);
                             }
                             /* Sort table */
-                            $( '.wdk-media' ).sortable({
+                            $( '.winter_mvc-media' ).sortable({
                                 update: function(event, ui) {
                                     re_order($(this));
                                 }
                             });
                             /* remove media */
-                            $( '.wdk-media' ).find('.wdk-media-card .remove').on('click', function(e){
+                            $( '.winter_mvc-media' ).find('.winter_mvc-media-card .remove').on('click', function(e){
                                 e.preventDefault();
-                                var media = $(this).closest('.wdk-media')
-                                $(this).closest('.wdk-media-card').remove();
+                                var media = $(this).closest('.winter_mvc-media')
+                                $(this).closest('.winter_mvc-media-card').remove();
                                 re_order(media)
                             })
                         });

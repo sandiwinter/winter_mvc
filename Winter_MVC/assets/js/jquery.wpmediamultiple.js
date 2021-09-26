@@ -103,7 +103,7 @@ jQuery.fn.wpMediaMultiple = function (options)
 
         for (var item in attachments) {
             //console.log(attachments[item]);
-            options.imgContainer.append( '<div class="wdk-media-card" data-media-id="'+attachments[item].id+'"><img src="'+attachments[item].url+'" alt="" class="thumbnail"/><a href="#" class="remove"></a></div>' );
+            options.imgContainer.append( '<div class="winter_mvc--media-card" data-media-id="'+attachments[item].id+'"><img src="'+attachments[item].url+'" alt="" class="thumbnail"/><a href="#" class="remove"></a></div>' );
             if (input_values.slice(-1) != ',')
                 input_values += ',';
             
@@ -126,7 +126,7 @@ jQuery.fn.wpMediaMultiple = function (options)
         /* order */
         var re_order = function(media_elent){
             var list_media = '';
-            media_elent.find('.wdk-media-card').each(function(){
+            media_elent.find('.winter_mvc-media-card').each(function(){
                 if(list_media !='')
                     list_media +=',';
 
@@ -135,16 +135,16 @@ jQuery.fn.wpMediaMultiple = function (options)
             media_elent.closest('.postbox-upload-multiple').find('.logo_image_id').val(list_media);
         }
         /* Sort table */
-         options.imgIdInput.closest( '.postbox-upload-multiple').find( '.wdk-media' ).sortable({
+         options.imgIdInput.closest( '.postbox-upload-multiple').find( '.winter_mvc-media' ).sortable({
             update: function(event, ui) {
                 re_order(jQuery(this));
             }
         });
         /* remove media */
-        options.imgIdInput.closest( '.postbox-upload-multiple').find('.wdk-media .wdk-media-card .remove').off().on('click', function(e){
+        options.imgIdInput.closest( '.postbox-upload-multiple').find('.winter_mvc-media .winter_mvc-media-card .remove').off().on('click', function(e){
             e.preventDefault();
-            var media = jQuery(this).closest('.wdk-media')
-            jQuery(this).closest('.wdk-media-card').remove();
+            var media = jQuery(this).closest('.winter_mvc-media')
+            jQuery(this).closest('.winter_mvc-media-card').remove();
             re_order(media)
         })
         // end js manager feature
