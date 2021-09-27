@@ -569,15 +569,15 @@ function wmvc_upload_multiple($field_name, $image_ids='')
                         if( typeof jQuery.fn.wpMediaMultiple == 'function')
                             $('#".esc_js($field_name)."meta-box-id.postbox-upload-multiple').wpMediaMultiple();
                             /* order */
-                            var re_order = function(media_elent){
+                            var re_order = function(media_element){
                                 var list_media = '';
-                                media_elent.find('.winter_mvc-media-card').each(function(){
+                                media_element.find('.winter_mvc-media-card').each(function(){
                                     if(list_media !='')
                                         list_media +=',';
 
                                     list_media += $(this).attr('data-media-id');
                                 })
-                                media_elent.closest('.postbox-upload-multiple').find('.logo_image_id').val(list_media);
+                                media_element.closest('.postbox-upload-multiple').find('.logo_image_id').val(list_media);
                             }
                             /* Sort table */
                             $( '.winter_mvc-media' ).sortable({

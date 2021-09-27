@@ -124,15 +124,15 @@ jQuery.fn.wpMediaMultiple = function (options)
 
         // start js manager feature
         /* order */
-        var re_order = function(media_elent){
+        var re_order = function(media_element){
             var list_media = '';
-            media_elent.find('.winter_mvc-media-card').each(function(){
+            media_element.find('.winter_mvc-media-card').each(function(){
                 if(list_media !='')
                     list_media +=',';
 
                 list_media += jQuery(this).attr('data-media-id');
             })
-            media_elent.closest('.postbox-upload-multiple').find('.logo_image_id').val(list_media);
+            media_element.closest('.postbox-upload-multiple').find('.logo_image_id').val(list_media);
         }
         /* Sort table */
          options.imgIdInput.closest( '.postbox-upload-multiple').find( '.winter_mvc-media' ).sortable({
