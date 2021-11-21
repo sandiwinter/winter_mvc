@@ -124,9 +124,9 @@ class MVC_Database {
 	 * @param	string	the type of join
 	 * @param	string	whether not to try to escape identifiers
 	 */
-	public function join($sql_part, $escape = NULL)
+	public function join($sql_part, $escape = NULL, $condition = '')
 	{
-		$this->query_array['join'][' JOIN '.$sql_part] = $escape;
+		$this->query_array['join'][' '.$condition.' JOIN '.$sql_part] = $escape;
 	}
 
 	// --------------------------------------------------------------------
@@ -435,7 +435,7 @@ class MVC_Database {
 			$sql_query .= 'OFFSET '.$this->query_array['offset'].' ';
 		}
 
-		//dump($sql_query);
+		//wmvc_dump($sql_query);
 
 		return $sql_query;
 	}
@@ -522,14 +522,21 @@ class MVC_Database {
 
 		foreach($data as $key=>$val)
 		{
-			$query.= ' `'.$key.'` = \''.$val.'\' ,';
+            if($val === NULL)
+            {
+                $query.= ' `'.$key.'` = NULL ,';
+            }
+            else
+            {
+                $query.= ' `'.$key.'` = \''.$val.'\' ,';
+            }
 		}
 
 		$query = substr($query, 0, -1);
 
 		$query.= 'WHERE '.$primary_field.'='.$id.';';
 
-		//echo $query;
+		//echo $query;exit();
 
 		$this->query($query);
 

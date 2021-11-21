@@ -138,7 +138,7 @@ if ( ! class_exists( 'Winter_MVC_Model' ) ):
                 }
             }
 
-            //dump($prepared_data);
+            //wmvc_dump($prepared_data);
 
             return $prepared_data;
         }

@@ -122,7 +122,7 @@ class MVC_Loader {
         }
         else
         {
-            echo 'Controller file not found in: '.$file;
+            echo 'Controller file not found in: '.esc_html($file);
         }
 
     }
@@ -163,7 +163,7 @@ class MVC_Loader {
         }
         else
         {
-            echo 'View file not found in: '.$file;
+            echo 'View file not found in: '.esc_html($file);
         }
     }
 
@@ -207,7 +207,7 @@ class MVC_Loader {
         }
         else
         {
-            echo 'Model file not found in: '.$file;
+            echo 'Model file not found in: '.esc_html($file);
         }
 
     }
