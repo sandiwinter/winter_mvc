@@ -130,7 +130,14 @@ if ( ! class_exists( 'Winter_MVC_Model' ) ):
 
                 if(isset($data[$val]))
                 {
-                    $prepared_data[$val] = $data[$val];
+                    if($data[$val] === '')
+                    {
+                        $prepared_data[$val] = NULL;
+                    }
+                    else
+                    {
+                        $prepared_data[$val] = $data[$val];
+                    }
                 }
                 else
                 {
