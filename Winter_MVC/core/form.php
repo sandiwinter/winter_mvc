@@ -37,6 +37,11 @@ class MVC_Form {
         $this->error_messages[$validation] = $message;
     }
 
+    public function add_manual_error_message($message)
+    {
+        $this->messages[] = $message;
+    }
+
     public function run($rules)
     {
         if(!isset($_POST))return FALSE;
