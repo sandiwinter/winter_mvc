@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Winter_MVC library
+ *
+ * @version 2.0
+ *
+ * @author SWIT
+ * @link https://github.com/sandiwinter/winter_mvc
+ */
+
 require_once 'core/mvc_loader.php';
 
 global $Winter_MVC;
