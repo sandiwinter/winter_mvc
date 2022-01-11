@@ -114,6 +114,7 @@ class MVC_Form {
 
 }
 
+// depracticated
 if(!function_exists('is_valid_email'))
 {
     function is_valid_email($email)
@@ -129,6 +130,7 @@ if(!function_exists('is_valid_email'))
     }
 }
 
+// depracticated
 if(!function_exists('is_required'))
 {
     function is_required($string)
@@ -140,6 +142,7 @@ if(!function_exists('is_required'))
     }
 }
 
+// depracticated
 if(!function_exists('is_intval'))
 {
     function is_intval($string)
@@ -151,24 +154,76 @@ if(!function_exists('is_intval'))
     }
 }
 
+// depracticated
+if(!function_exists('is_sockets_enabled'))
+{
+    function is_sockets_enabled($string)
+    {
+        return wmvc_is_sockets_enabled();
+    }
+}
 
+if(!function_exists('wmvc_is_valid_email'))
+{
+    function wmvc_is_valid_email($email)
+    {
+        $regex = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,10})$/";
+        $email = strtolower($email);
+
+        if (!preg_match($regex, $email)) {
+            return FALSE;
+        }
+    
+        return TRUE;
+    }
+}
+
+if(!function_exists('wmvc_is_required'))
+{
+    function wmvc_is_required($string)
+    {
+        if(empty($string))
+            return FALSE;
+    
+        return TRUE;
+    }
+}
+
+if(!function_exists('wmvc_is_intval'))
+{
+    function wmvc_is_intval($string)
+    {
+        if(!is_numeric($string))
+            return FALSE;
+    
+        return TRUE;
+    }
+}
+
+// depracticated
 if(!function_exists('is_valid_date'))
 {
     function is_valid_date($string)
+    {
+        return wmvc_is_valid_date($string);
+    }
+}
+
+if(!function_exists('wmvc_is_valid_date'))
+{
+    function wmvc_is_valid_date($string)
     {
         return strtotime($string) !== FALSE;
     }
 }
 
-if(!function_exists('is_sockets_enabled'))
+if(!function_exists('wmvc_is_sockets_enabled'))
 {
-    function is_sockets_enabled($string)
+    function wmvc_is_sockets_enabled()
     {
         return function_exists('socket_create');
     }
 }
-
-
 
 
 endif;

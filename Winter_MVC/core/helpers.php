@@ -1,37 +1,48 @@
 <?php
-/**
-* @deprecated 2.0 Use wmvc_download_file()
-* @see wmvc_download_file()
-*/
-function hmvc_download_file($url, $save_file_loc, $data = array())
+
+if ( ! function_exists('hmvc_download_file'))
 {
-    return wmvc_download_file($url, $save_file_loc, $data);
+    /**
+    * @deprecated 2.0 Use wmvc_download_file()
+    * @see wmvc_download_file()
+    */
+    function hmvc_download_file($url, $save_file_loc, $data = array())
+    {
+        return wmvc_download_file($url, $save_file_loc, $data);
+    }
 }
 
-/**
-* @deprecated 2.0 Use wmvc_api_call()
-* @see wmvc_api_call()
-*/
-function hmvc_api_call($method, $url, $data, $headers = false)
+if ( ! function_exists('hmvc_current_edit_url'))
 {
-    return wmvc_api_call($method, $url, $data, $headers);
+    /**
+    * @deprecated 2.0 Use wmvc_current_edit_url()
+    * @see wmvc_current_edit_url()
+    */
+    function hmvc_current_edit_url()
+    {
+        return wmvc_current_edit_url();
+    }
 }
 
-/**
-* @deprecated 2.0 Use wmvc_api_call()
-* @see wmvc_api_call()
-*/
-function hmvc_current_edit_url()
+if ( ! function_exists('hmvc_api_call'))
 {
-    return wmvc_current_edit_url();
+    /**
+    * @deprecated 2.0 Use wmvc_api_call()
+    * @see wmvc_api_call()
+    */
+    function hmvc_api_call($method, $url, $data, $headers = false)
+    {
+        return wmvc_api_call($method, $url, $data, $headers);
+    }
 }
 
-/**
-* @deprecated 2.0 Use wmvc_echo_js()
-* @see wmvc_echo_js()
-*/
+
 if ( ! function_exists('echo_js'))
 {
+    /**
+    * @deprecated 2.0 Use wmvc_echo_js()
+    * @see wmvc_echo_js()
+    */
     function echo_js($str)
     {
         $str = str_replace("'", "\'", trim($str));
@@ -41,23 +52,12 @@ if ( ! function_exists('echo_js'))
     }
 }
 
-if ( ! function_exists('wmvc_echo_js'))
-{
-    function wmvc_echo_js($str)
-    {
-        $str = str_replace("'", "\'", trim($str));
-        $str = str_replace('"', '\"', $str);
-        
-        echo $str;
-    }
-}
-
-/**
-* @deprecated 2.0 Use wmvc_js()
-* @see wmvc_js()
-*/
 if ( ! function_exists('_js'))
 {
+    /**
+    * @deprecated 2.0 Use wmvc_js()
+    * @see wmvc_js()
+    */
     function _js($str)
     {
         $str = str_replace("\\", "", trim($str));
@@ -68,24 +68,12 @@ if ( ! function_exists('_js'))
     }
 }
 
-if ( ! function_exists('wmvc_js'))
-{
-    function wmvc_js($str)
-    {
-        $str = str_replace("\\", "", trim($str));
-        $str = str_replace("'", "\'", trim($str));
-        $str = str_replace('"', '\"', $str);
-        
-        return $str;
-    }
-}
-
-/**
-* @deprecated 2.0 Use wmvc_dump()
-* @see wmvc_dump()
-*/
 if ( ! function_exists('dump'))
 {
+    /**
+    * @deprecated 2.0 Use wmvc_dump()
+    * @see wmvc_dump()
+    */
     function dump($var)
     {
         echo '<pre>';
@@ -94,22 +82,12 @@ if ( ! function_exists('dump'))
     }
 }
 
-if ( ! function_exists('wmvc_dump'))
-{
-    function wmvc_dump($var)
-    {
-        echo '<pre>';
-        var_dump($var);
-        echo '</pre>';
-    }
-}
-
-/**
-* @deprecated 2.0 Use wmvc_resolve_ip()
-* @see wmvc_resolve_ip()
-*/
 if ( ! function_exists('resolve_ip'))
 {
+    /**
+    * @deprecated 2.0 Use wmvc_resolve_ip()
+    * @see wmvc_resolve_ip()
+    */
     function resolve_ip($ip)
     {
         if($ip == 'DISABLED')
@@ -131,6 +109,334 @@ if ( ! function_exists('resolve_ip'))
         return $str;
     }
 }
+
+if ( ! function_exists('stringify_attributes'))
+{
+    /**
+     * Stringify attributes for use in html tags.
+     * 
+     * @since 1.0
+     * @deprecated 2.0 Use wmvc_stringify_attributes()
+     * @see wmvc_stringify_attributes()
+     * 
+     * Helper function used to convert an array or object of
+     * attributes to a string
+     *
+     * @param	mixed
+     * @return	string
+     */
+    function stringify_attributes($attributes, $js = FALSE)
+    {
+        if (is_object($attributes) && count($attributes) > 0)
+        {
+            $attributes = (array) $attributes;
+        }
+
+        if (is_array($attributes))
+        {
+            $atts = '';
+            if (count($attributes) === 0)
+            {
+                return $atts;
+            }
+            foreach ($attributes as $key => $val)
+            {
+                if ($js)
+                {
+                    $atts .= $key.'='.$val.',';
+                }
+                else
+                {
+                    $atts .= ' '.$key.'="'.$val.'"';
+                }
+            }
+            return rtrim($atts, ',');
+        }
+        elseif (is_string($attributes) && strlen($attributes) > 0)
+        {
+            return ' '.$attributes;
+        }
+
+        return $attributes;
+    }
+}
+
+if ( ! function_exists('anchor'))
+{
+    /**
+     * Anchor Link
+     *
+     * Creates an anchor based on the local URL.
+     *
+     * @deprecated 2.0 Use wmvc_anchor()
+     * @see wmvc_anchor()
+     * 
+     * @param	string	the URL
+     * @param	string	the link title
+     * @param	mixed	any attributes
+     * @return	string
+     */
+	function anchor($uri = '', $title = '', $attributes = '')
+	{
+		$title = (string) $title;
+
+		$site_url = is_array($uri)
+			? site_url($uri)
+			: (preg_match('#^(\w+:)?//#i', $uri) ? $uri : site_url($uri));
+
+		if ($title === '')
+		{
+			$title = $site_url;
+		}
+
+		if ($attributes !== '')
+		{
+			$attributes = stringify_attributes($attributes);
+		}
+
+		return '<a href="'.$site_url.'"'.$attributes.'>'.$title.'</a>';
+	}
+}
+
+if ( ! function_exists('btn_edit'))
+{
+    /**
+    * @deprecated 2.0 Use wmvc_btn_edit()
+    * @see wmvc_btn_edit()
+    */
+    function btn_edit($uri)
+    {
+        return anchor($uri, '<i class="glyphicon glyphicon-pencil"></i>', array('class'=>'btn btn-success btn-xs'));
+    }
+}
+
+
+if ( ! function_exists('btn_read'))
+{
+    /**
+    * @deprecated 2.0 Use wmvc_btn_read()
+    * @see wmvc_btn_read()
+    */
+    function btn_read($uri, $title=NULL)
+    {
+        if(empty($title))$title=__('Read', 'wmvc_win');
+        
+        return anchor($uri, '<i class="glyphicon glyphicon-search"></i> '.$title, array('class'=>'btn btn-primary btn-xs'));
+    }
+}
+
+if ( ! function_exists('btn_open'))
+{
+    /**
+    * @deprecated 2.0 Use wmvc_btn_open()
+    * @see wmvc_btn_open()
+    */
+    function btn_open($uri, $target=NULL)
+    {
+        if($target === NULL)
+            $target = '_blank';
+
+        return anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs', 'target'=>$target, 'title'=>__('Open details', 'wmvc_win')));
+    }
+}
+
+if ( ! function_exists('btn_open_ajax'))
+{
+    /**
+    * @deprecated 2.0 Use wmvc_btn_open_ajax()
+    * @see wmvc_btn_open_ajax()
+    */
+    function btn_open_ajax($uri, $target=NULL)
+    {
+        if($target === NULL)
+            $target = '_blank';
+
+        return anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs popup-with-form-ajax', 'target'=>$target, 'title'=>__('Open details', 'wmvc_win')));
+    }
+}
+
+if ( ! function_exists('btn_delete_noconfirm'))
+{
+    /**
+    * @deprecated 2.0 Use wmvc_btn_delete_noconfirm()
+    * @see wmvc_btn_delete_noconfirm()
+    */
+    function btn_delete_noconfirm($uri)
+    {
+        return anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array('class'=>'btn btn-danger btn-xs delete_button'));
+    }
+}
+
+
+if ( ! function_exists('btn_delete'))
+{
+    /**
+    * @deprecated 2.0 Use wmvc_btn_delete()
+    * @see wmvc_btn_delete()
+    */
+    function btn_delete($uri, $confirm_question = TRUE, $title='')
+    {
+        $target = '';
+        if(isset($_GET['popup']))
+        {
+            $target = '';
+        }
+
+        if($confirm_question)
+        {
+            return anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array( 'target' => $target,  'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-danger btn-xs delete_button'));
+        }
+        else
+        {
+            return anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array( 'target' => $target,  'title' => $title, 'class'=>'btn btn-danger btn-xs delete_button'));
+        }
+    }
+}
+
+
+if ( ! function_exists('btn_save'))
+{
+    /**
+    * @deprecated 2.0 Use wmvc_btn_save()
+    * @see wmvc_btn_save()
+    */
+    function btn_save($uri, $empty = '-empty')
+    {
+        $target = '';
+        if(isset($_GET['popup']))
+        {
+            $target = '';
+        }
+
+        return anchor($uri, '<i class="glyphicon glyphicon-heart'.$empty.'"></i> ', array( 'target' => $target, 'class'=>'btn btn-danger btn-xs save_button', 'title'=>__('Save as Favourite for further analysis', 'wmvc_win')));
+    }
+}
+
+if ( ! function_exists('btn_block'))
+{
+    /**
+    * @deprecated 2.0 Use wmvc_btn_block()
+    * @see wmvc_btn_block()
+    */
+    function btn_block($uri, $confirm_question = FALSE, $title='')
+    {
+        $target = '';
+        if(isset($_GET['popup']))
+        {
+            $target = '_blank';
+        }
+
+        if($confirm_question)
+        {
+            return anchor($uri, '<i class="glyphicon glyphicon-lock"></i> ', array( 'target' => $target, 'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-warning btn-xs block_button'));
+        }
+        else
+        {
+            return anchor($uri, '<i class="glyphicon glyphicon-lock"></i> ', array( 'target' => $target, 'title' => $title, 'class'=>'btn btn-warning btn-xs block_button'));
+        }
+    }
+}
+
+if ( ! function_exists('btn_view'))
+{
+    /**
+    * @deprecated 2.0 Use wmvc_btn_view()
+    * @see wmvc_btn_view()
+    */
+    function btn_view($uri, $confirm_question = FALSE, $title='')
+    {
+        if($confirm_question)
+        {
+            return anchor($uri, '<i class="glyphicon glyphicon-search"></i> ', array( 'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-info btn-xs'));
+        }
+        else
+        {
+            return anchor($uri, '<i class="glyphicon glyphicon-search"></i> ', array( 'title' => $title, 'class'=>'btn btn-info btn-xs'));
+        }
+    }
+}
+
+if ( ! function_exists('btn_hide'))
+{
+    /**
+    * @deprecated 2.0 Use wmvc_btn_hide()
+    * @see wmvc_btn_hide()
+    */
+    function btn_hide($uri)
+    {
+        $target = '';
+        if(isset($_GET['popup']))
+        {
+            $target = '_blank';
+        }
+
+        return anchor($uri, '<i class="glyphicon glyphicon-eye-close"></i> ', array( 'target' => $target, 'class'=>'btn btn-default btn-xs', 'title'=>__('Define hide rules', 'wmvc_win')));
+    }
+}
+
+
+if ( ! function_exists('get_file_extension'))
+{
+    /**
+    * @deprecated 2.0 Use wmvc_get_file_extension()
+    * @see wmvc_get_file_extension()
+    */
+    function get_file_extension($filepath)
+    {
+        return substr($filepath, strrpos($filepath, '.')+1);
+    }
+}
+
+if ( ! function_exists('character_hard_limiter'))
+{
+    /**
+    * @deprecated 2.0 Use wmvc_character_hard_limiter()
+    * @see wmvc_character_hard_limiter()
+    */
+    function character_hard_limiter($string, $max_len)
+    {
+        if(strlen($string)>$max_len)
+        {
+            return substr($string, 0, $max_len-3).'...';
+        }
+        
+        return $string;
+    }
+}
+
+if ( ! function_exists('wmvc_echo_js'))
+{
+    function wmvc_echo_js($str)
+    {
+        $str = str_replace("'", "\'", trim($str));
+        $str = str_replace('"', '\"', $str);
+        
+        echo $str;
+    }
+}
+
+if ( ! function_exists('wmvc_js'))
+{
+    function wmvc_js($str)
+    {
+        $str = str_replace("\\", "", trim($str));
+        $str = str_replace("'", "\'", trim($str));
+        $str = str_replace('"', '\"', $str);
+        
+        return $str;
+    }
+}
+
+if ( ! function_exists('wmvc_dump'))
+{
+    function wmvc_dump($var)
+    {
+        echo '<pre>';
+        var_dump($var);
+        echo '</pre>';
+    }
+}
+
 
 if ( ! function_exists('wmvc_resolve_ip'))
 {
@@ -156,137 +462,51 @@ if ( ! function_exists('wmvc_resolve_ip'))
     }
 }
 
-if ( ! function_exists('stringify_attributes'))
-{
 /**
  * Stringify attributes for use in html tags.
- * 
- * @since 1.0
- * @deprecated 2.0 Use wmvc_stringify_attributes()
- * @see wmvc_stringify_attributes()
+ *
  * Helper function used to convert an array or object of
  * attributes to a string
  *
  * @param	mixed
  * @return	string
  */
-function stringify_attributes($attributes, $js = FALSE)
-{
-	if (is_object($attributes) && count($attributes) > 0)
-	{
-		$attributes = (array) $attributes;
-	}
-
-	if (is_array($attributes))
-	{
-		$atts = '';
-		if (count($attributes) === 0)
-		{
-			return $atts;
-		}
-		foreach ($attributes as $key => $val)
-		{
-			if ($js)
-			{
-				$atts .= $key.'='.$val.',';
-			}
-			else
-			{
-				$atts .= ' '.$key.'="'.$val.'"';
-			}
-		}
-		return rtrim($atts, ',');
-	}
-	elseif (is_string($attributes) && strlen($attributes) > 0)
-	{
-		return ' '.$attributes;
-	}
-
-	return $attributes;
-}
-}
-
-
 if ( ! function_exists('wmvc_stringify_attributes'))
 {
-/**
- * Stringify attributes for use in html tags.
- *
- * Helper function used to convert an array or object of
- * attributes to a string
- *
- * @param	mixed
- * @return	string
- */
-function wmvc_stringify_attributes($attributes, $js = FALSE)
-{
-	if (is_object($attributes) && count($attributes) > 0)
-	{
-		$attributes = (array) $attributes;
-	}
+    function wmvc_stringify_attributes($attributes, $js = FALSE)
+    {
+        if (is_object($attributes) && count($attributes) > 0)
+        {
+            $attributes = (array) $attributes;
+        }
 
-	if (is_array($attributes))
-	{
-		$atts = '';
-		if (count($attributes) === 0)
-		{
-			return $atts;
-		}
-		foreach ($attributes as $key => $val)
-		{
-			if ($js)
-			{
-				$atts .= $key.'='.$val.',';
-			}
-			else
-			{
-				$atts .= ' '.$key.'="'.$val.'"';
-			}
-		}
-		return rtrim($atts, ',');
-	}
-	elseif (is_string($attributes) && strlen($attributes) > 0)
-	{
-		return ' '.$attributes;
-	}
+        if (is_array($attributes))
+        {
+            $atts = '';
+            if (count($attributes) === 0)
+            {
+                return $atts;
+            }
+            foreach ($attributes as $key => $val)
+            {
+                if ($js)
+                {
+                    $atts .= $key.'='.$val.',';
+                }
+                else
+                {
+                    $atts .= ' '.$key.'="'.$val.'"';
+                }
+            }
+            return rtrim($atts, ',');
+        }
+        elseif (is_string($attributes) && strlen($attributes) > 0)
+        {
+            return ' '.$attributes;
+        }
 
-	return $attributes;
-}
-}
-
-if ( ! function_exists('anchor'))
-{
-	/**
-	 * Anchor Link
-	 *
-	 * Creates an anchor based on the local URL.
-     * @deprecated 2.0 Use wmvc_anchor()
-     * @see Use wmvc_anchor()
-	 * @param	string	the URL
-	 * @param	string	the link title
-	 * @param	mixed	any attributes
-	 * @return	string
-	 */
-	function anchor($uri = '', $title = '', $attributes = '')
-	{
-		$title = (string) $title;
-
-		$site_url = is_array($uri)
-			? site_url($uri)
-			: (preg_match('#^(\w+:)?//#i', $uri) ? $uri : site_url($uri));
-
-		if ($title === '')
-		{
-			$title = $site_url;
-		}
-
-		if ($attributes !== '')
-		{
-			$attributes = stringify_attributes($attributes);
-		}
-
-		return '<a href="'.$site_url.'"'.$attributes.'>'.$title.'</a>';
-	}
+        return $attributes;
+    }
 }
 
 if ( ! function_exists('wmvc_anchor'))
@@ -316,25 +536,13 @@ if ( ! function_exists('wmvc_anchor'))
 
 		if ($attributes !== '')
 		{
-			$attributes = stringify_attributes($attributes);
+			$attributes = wmvc_stringify_attributes($attributes);
 		}
 
-		return '<a href="'.$site_url.'"'.$attributes.'>'.$title.'</a>';
+		return '<a href="'.esc_url($site_url).'"'.wp_kses_post($attributes).'>'.wp_kses_post($title).'</a>';
 	}
 }
 
-if ( ! function_exists('btn_edit'))
-{
-
-/**
-* @deprecated 2.0 Use wmvc_btn_edit()
-* @see wmvc_btn_edit()
-*/
-    function btn_edit($uri)
-    {
-        return anchor($uri, '<i class="glyphicon glyphicon-pencil"></i>', array('class'=>'btn btn-success btn-xs'));
-    }
-}
 
 if ( ! function_exists('wmvc_btn_edit'))
 {
@@ -344,42 +552,13 @@ if ( ! function_exists('wmvc_btn_edit'))
     }
 }
 
-if ( ! function_exists('btn_read'))
-{
-    /**
-* @deprecated 2.0 Use wmvc_btn_read()
-* @see wmvc_btn_read()
-*/
-    function btn_read($uri, $title=NULL)
-    {
-        if(empty($title))$title=__('Read', 'wmvc_win');
-        
-        return anchor($uri, '<i class="glyphicon glyphicon-search"></i> '.$title, array('class'=>'btn btn-primary btn-xs'));
-    }
-}
-
 if ( ! function_exists('wmvc_btn_read'))
 {
     function wmvc_btn_read($uri, $title=NULL)
     {
         if(empty($title))$title=__('Read', 'wmvc_win');
         
-        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i> '.$title, array('class'=>'btn btn-primary btn-xs'));
-    }
-}
-
-if ( ! function_exists('btn_open'))
-{
-/**
-* @deprecated 2.0 Use wmvc_btn_open()
-* @see wmvc_btn_open()
-*/
-    function btn_open($uri, $target=NULL)
-    {
-        if($target === NULL)
-            $target = '_blank';
-
-        return anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs', 'target'=>$target, 'title'=>__('Open details', 'wmvc_win')));
+        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i> '.esc_html($title), array('class'=>'btn btn-primary btn-xs'));
     }
 }
 
@@ -390,22 +569,7 @@ if ( ! function_exists('wmvc_btn_open'))
         if($target === NULL)
             $target = '_blank';
 
-        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs', 'target'=>$target, 'title'=>__('Open details', 'wmvc_win')));
-    }
-}
-
-if ( ! function_exists('btn_open_ajax'))
-{
-/**
-* @deprecated 2.0 Use wmvc_btn_open_ajax()
-* @see wmvc_btn_open_ajax()
-*/
-    function btn_open_ajax($uri, $target=NULL)
-    {
-        if($target === NULL)
-            $target = '_blank';
-
-        return anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs popup-with-form-ajax', 'target'=>$target, 'title'=>__('Open details', 'wmvc_win')));
+        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs', 'target'=>esc_html($target), 'title'=>esc_html__('Open details', 'wmvc_win')));
     }
 }
 
@@ -416,19 +580,7 @@ if ( ! function_exists('wmvc_btn_open_ajax'))
         if($target === NULL)
             $target = '_blank';
 
-        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs popup-with-form-ajax', 'target'=>$target, 'title'=>__('Open details', 'wmvc_win')));
-    }
-}
-
-if ( ! function_exists('btn_delete_noconfirm'))
-{
-    /**
-* @deprecated 2.0 Use wmvc_btn_delete_noconfirm()
-* @see wmvc_btn_delete_noconfirm()
-*/
-    function btn_delete_noconfirm($uri)
-    {
-        return anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array('class'=>'btn btn-danger btn-xs delete_button'));
+        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i>', array('class'=>'btn btn-primary btn-xs popup-with-form-ajax', 'target'=>esc_html($target), 'title'=>esc_html__('Open details', 'wmvc_win')));
     }
 }
 
@@ -440,30 +592,6 @@ if ( ! function_exists('wmvc_btn_delete_noconfirm'))
     }
 }
 
-if ( ! function_exists('btn_delete'))
-{
-    /**
-* @deprecated 2.0 Use wmvc_btn_delete()
-* @see wmvc_btn_delete()
-*/
-    function btn_delete($uri, $confirm_question = TRUE, $title='')
-    {
-        $target = '';
-        if(isset($_GET['popup']))
-        {
-            $target = '';
-        }
-
-        if($confirm_question)
-        {
-            return anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array( 'target' => $target,  'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-danger btn-xs delete_button'));
-        }
-        else
-        {
-            return anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array( 'target' => $target,  'title' => $title, 'class'=>'btn btn-danger btn-xs delete_button'));
-        }
-    }
-}
 
 if ( ! function_exists('wmvc_btn_delete'))
 {
@@ -477,30 +605,12 @@ if ( ! function_exists('wmvc_btn_delete'))
 
         if($confirm_question)
         {
-            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array( 'target' => $target,  'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-danger btn-xs delete_button'));
+            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array( 'target' => esc_html($target),  'title' => esc_html($title), 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')',  'class'=>'btn btn-danger btn-xs delete_button action_confirm'));
         }
         else
         {
-            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array( 'target' => $target,  'title' => $title, 'class'=>'btn btn-danger btn-xs delete_button'));
+            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array( 'target' => esc_html($target),  'title' => esc_html($title), 'class'=>'btn btn-danger btn-xs delete_button'));
         }
-    }
-}
-
-if ( ! function_exists('btn_save'))
-{
-    /**
-* @deprecated 2.0 Use wmvc_btn_save()
-* @see wmvc_btn_save()
-*/
-    function btn_save($uri, $empty = '-empty')
-    {
-        $target = '';
-        if(isset($_GET['popup']))
-        {
-            $target = '';
-        }
-
-        return anchor($uri, '<i class="glyphicon glyphicon-heart'.$empty.'"></i> ', array( 'target' => $target, 'class'=>'btn btn-danger btn-xs save_button', 'title'=>__('Save as Favourite for further analysis', 'wmvc_win')));
     }
 }
 
@@ -514,32 +624,7 @@ if ( ! function_exists('wmvc_btn_save'))
             $target = '';
         }
 
-        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-heart'.$empty.'"></i> ', array( 'target' => $target, 'class'=>'btn btn-danger btn-xs save_button', 'title'=>__('Save as Favourite for further analysis', 'wmvc_win')));
-    }
-}
-
-if ( ! function_exists('btn_block'))
-{
-    /**
-* @deprecated 2.0 Use wmvc_btn_block()
-* @see wmvc_btn_block()
-*/
-    function btn_block($uri, $confirm_question = FALSE, $title='')
-    {
-        $target = '';
-        if(isset($_GET['popup']))
-        {
-            $target = '_blank';
-        }
-
-        if($confirm_question)
-        {
-            return anchor($uri, '<i class="glyphicon glyphicon-lock"></i> ', array( 'target' => $target, 'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-warning btn-xs block_button'));
-        }
-        else
-        {
-            return anchor($uri, '<i class="glyphicon glyphicon-lock"></i> ', array( 'target' => $target, 'title' => $title, 'class'=>'btn btn-warning btn-xs block_button'));
-        }
+        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-heart'.esc_attr($empty).'"></i> ', array( 'target' => esc_html($target), 'class'=>'btn btn-danger btn-xs save_button', 'title'=>esc_html__('Save', 'wmvc_win')));
     }
 }
 
@@ -555,30 +640,11 @@ if ( ! function_exists('wmvc_btn_block'))
 
         if($confirm_question)
         {
-            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-lock"></i> ', array( 'target' => $target, 'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-warning btn-xs block_button'));
+            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-lock"></i> ', array( 'target' => esc_attr($target), 'title' => esc_html($title), 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-warning btn-xs block_button action_block'));
         }
         else
         {
-            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-lock"></i> ', array( 'target' => $target, 'title' => $title, 'class'=>'btn btn-warning btn-xs block_button'));
-        }
-    }
-}
-
-if ( ! function_exists('btn_view'))
-{
-    /**
-* @deprecated 2.0 Use wmvc_btn_view()
-* @see wmvc_btn_view()
-*/
-    function btn_view($uri, $confirm_question = FALSE, $title='')
-    {
-        if($confirm_question)
-        {
-            return anchor($uri, '<i class="glyphicon glyphicon-search"></i> ', array( 'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-info btn-xs'));
-        }
-        else
-        {
-            return anchor($uri, '<i class="glyphicon glyphicon-search"></i> ', array( 'title' => $title, 'class'=>'btn btn-info btn-xs'));
+            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-lock"></i> ', array( 'target' => esc_attr($target), 'title' => esc_html($title), 'class'=>'btn btn-warning btn-xs block_button'));
         }
     }
 }
@@ -589,30 +655,12 @@ if ( ! function_exists('wmvc_btn_view'))
     {
         if($confirm_question)
         {
-            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i> ', array( 'title' => $title, 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-info btn-xs'));
+            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i> ', array( 'title' => esc_html($title), 'onclick' => 'return confirm(\''.__('Are you sure?', 'wmvc_win').'\')', 'class'=>'btn btn-info btn-xs'));
         }
         else
         {
-            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i> ', array( 'title' => $title, 'class'=>'btn btn-info btn-xs'));
+            return wmvc_anchor($uri, '<i class="glyphicon glyphicon-search"></i> ', array( 'title' => esc_html($title), 'class'=>'btn btn-info btn-xs'));
         }
-    }
-}
-
-if ( ! function_exists('btn_hide'))
-{
-    /**
-* @deprecated 2.0 Use wmvc_btn_hide()
-* @see wmvc_btn_hide()
-*/
-    function btn_hide($uri)
-    {
-        $target = '';
-        if(isset($_GET['popup']))
-        {
-            $target = '_blank';
-        }
-
-        return anchor($uri, '<i class="glyphicon glyphicon-eye-close"></i> ', array( 'target' => $target, 'class'=>'btn btn-default btn-xs', 'title'=>__('Define hide rules', 'wmvc_win')));
     }
 }
 
@@ -626,19 +674,7 @@ if ( ! function_exists('wmvc_btn_hide'))
             $target = '_blank';
         }
 
-        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-eye-close"></i> ', array( 'target' => $target, 'class'=>'btn btn-default btn-xs', 'title'=>__('Define hide rules', 'wmvc_win')));
-    }
-}
-
-if ( ! function_exists('get_file_extension'))
-{
-    /**
-* @deprecated 2.0 Use wmvc_get_file_extension()
-* @see wmvc_get_file_extension()
-*/
-    function get_file_extension($filepath)
-    {
-        return substr($filepath, strrpos($filepath, '.')+1);
+        return wmvc_anchor($uri, '<i class="glyphicon glyphicon-eye-close"></i> ', array( 'target' => esc_attr($target), 'class'=>'btn btn-default btn-xs', 'title'=>esc_html__('Define hide rules', 'wmvc_win')));
     }
 }
 
@@ -650,22 +686,6 @@ if ( ! function_exists('wmvc_get_file_extension'))
     }
 }
 
-if ( ! function_exists('character_hard_limiter'))
-{
-/**
-* @deprecated 2.0 Use wmvc_character_hard_limiter()
-* @see wmvc_character_hard_limiter()
-*/
-    function character_hard_limiter($string, $max_len)
-    {
-        if(strlen($string)>$max_len)
-        {
-            return substr($string, 0, $max_len-3).'...';
-        }
-        
-        return $string;
-    }
-}
 
 if ( ! function_exists('wmvc_character_hard_limiter'))
 {
@@ -852,7 +872,7 @@ function wmvc_upload_media($field_name, $image_id)
     <!-- Your image container, which can be manipulated with js -->
     <div class="custom-img-container">
         <?php if ( $you_have_img ) : ?>
-            <img src="<?php echo esc_html($your_img_src[0]); ?>" alt="<?php echo esc_attr__('thumb', 'wpdirectorykit');?>" style="max-width:100%;" class="thumbnail"/>
+            <img src="<?php echo esc_html($your_img_src[0]); ?>" alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"/>
         <?php endif; ?>
     </div>
     
@@ -925,7 +945,7 @@ function wmvc_upload_multiple($field_name, $image_ids='')
     <div class="custom-img-container winter_mvc-media">
         <?php if($you_have_img)foreach($your_img_src as $image_id => $img_src) : ?>
             <div class="winter_mvc-media-card" data-media-id="<?php echo esc_attr($image_id);?>">
-                <img src="<?php echo esc_html($img_src[0]); ?>" alt="<?php echo esc_attr__('thumb', 'wpdirectorykit');?>" style="max-width:100%;" class="thumbnail"/>
+                <img src="<?php echo esc_html($img_src[0]); ?>" alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"/>
                 <a href="#" class="remove"></a>
             </div>
         <?php endforeach; ?>
@@ -997,8 +1017,8 @@ function wmvc_select_radio($field_name, $options = array(), $selected = NULL)
     {
         $output.= '<div class="radio">';
         $output.= '<label>';
-        $output.= '<input type="radio" name="'.$field_name.'" id="optionsRadios1_format" value="'.$key.'" '.($selected==$key?'checked':'').' />';
-        $output.= $val;
+        $output.= '<input type="radio" name="'.esc_attr($field_name).'" id="optionsRadios1_format" value="'.esc_attr($key).'" '.($selected==$key?'checked':'').' />';
+        $output.= esc_html($val);
         $output.= '</label>';
         $output.= '</div>';
     }
@@ -1128,11 +1148,6 @@ function wmvc_seconds_to_hms($seconds, $show_days=true) {
 
 function wmvc_xml_encode($array)
 {
-    /*
-    $DOMDocument = NULL;
-    $mixed = NULL;
-    $domElement = new DOMElement('');
-    */
 
     if (is_null($DOMDocument)) {
         $DOMDocument =new DOMDocument;
@@ -1224,7 +1239,7 @@ function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $te
 
     // get url
     $url = strtok($_SERVER["REQUEST_URI"], '?');
-    $qs_parameters = wmvc_xss_clean($_GET);
+    $qs_parameters = wmvc_xss_clean( $_GET );
     unset($qs_parameters[$page_var]);
     
     $qs_part = http_build_query($qs_parameters);
@@ -1267,6 +1282,7 @@ function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $te
 
     return $output;
 }
+
 
 function wmvc_download_file($url, $save_file_loc, $data = array())
 {   
@@ -1352,7 +1368,7 @@ function wmvc_api_call($method, $url, $data, $headers = false){
 
 function wmvc_current_edit_url()
 {
-    $query_string_array = wmvc_xss_clean($_GET);
+    $query_string_array = wmvc_xss_clean( $_GET );
     unset($query_string_array['is_updated']);
 
     return admin_url("admin.php?".http_build_query($query_string_array));
@@ -1416,4 +1432,6 @@ if ( ! function_exists('wmvc_filter_decimal'))
         return $string;
 	}
 }
+
+
 ?>
