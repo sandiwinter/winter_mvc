@@ -745,9 +745,9 @@ function wmvc_character_limiter($text, $limit)
     return $text;
 }
 
-function wmvc_show_data($field_name, &$db_value = NULL, $default = '', $xss_clean = TRUE)
+function wmvc_show_data($field_name, &$db_value = NULL, $default = '', $xss_clean = TRUE, $skip_post = FALSE)
 {
-    if(isset($_POST[$field_name]))
+    if(!$skip_post && isset($_POST[$field_name]))
     {
         if($xss_clean === FALSE)
             return stripslashes($_POST[$field_name]);
