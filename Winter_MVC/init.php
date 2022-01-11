@@ -1,6 +1,5 @@
 <?php
 
-
 require_once 'core/mvc_loader.php';
 
 global $Winter_MVC;
