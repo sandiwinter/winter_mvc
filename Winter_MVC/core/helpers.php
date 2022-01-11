@@ -1,22 +1,35 @@
 <?php
-// depracticated
+/**
+* @deprecated 2.0 Use wmvc_download_file()
+* @see wmvc_download_file()
+*/
 function hmvc_download_file($url, $save_file_loc, $data = array())
 {
     return wmvc_download_file($url, $save_file_loc, $data);
 }
-// depracticated
+
+/**
+* @deprecated 2.0 Use wmvc_api_call()
+* @see wmvc_api_call()
+*/
 function hmvc_api_call($method, $url, $data, $headers = false)
 {
     return wmvc_api_call($method, $url, $data, $headers);
 }
-// depracticated
+
+/**
+* @deprecated 2.0 Use wmvc_api_call()
+* @see wmvc_api_call()
+*/
 function hmvc_current_edit_url()
 {
     return wmvc_current_edit_url();
 }
 
-
-//depracticated 
+/**
+* @deprecated 2.0 Use wmvc_echo_js()
+* @see wmvc_echo_js()
+*/
 if ( ! function_exists('echo_js'))
 {
     function echo_js($str)
@@ -39,7 +52,10 @@ if ( ! function_exists('wmvc_echo_js'))
     }
 }
 
-//depracticated 
+/**
+* @deprecated 2.0 Use wmvc_js()
+* @see wmvc_js()
+*/
 if ( ! function_exists('_js'))
 {
     function _js($str)
@@ -64,7 +80,10 @@ if ( ! function_exists('wmvc_js'))
     }
 }
 
-//depracticated 
+/**
+* @deprecated 2.0 Use wmvc_dump()
+* @see wmvc_dump()
+*/
 if ( ! function_exists('dump'))
 {
     function dump($var)
@@ -85,7 +104,10 @@ if ( ! function_exists('wmvc_dump'))
     }
 }
 
-//depracticated 
+/**
+* @deprecated 2.0 Use wmvc_resolve_ip()
+* @see wmvc_resolve_ip()
+*/
 if ( ! function_exists('resolve_ip'))
 {
     function resolve_ip($ip)
@@ -134,12 +156,14 @@ if ( ! function_exists('wmvc_resolve_ip'))
     }
 }
 
-//depracticated 
 if ( ! function_exists('stringify_attributes'))
 {
 /**
  * Stringify attributes for use in html tags.
- *
+ * 
+ * @since 1.0
+ * @deprecated 2.0 Use wmvc_stringify_attributes()
+ * @see wmvc_stringify_attributes()
  * Helper function used to convert an array or object of
  * attributes to a string
  *
@@ -230,14 +254,14 @@ function wmvc_stringify_attributes($attributes, $js = FALSE)
 }
 }
 
-//depracticated 
 if ( ! function_exists('anchor'))
 {
 	/**
 	 * Anchor Link
 	 *
 	 * Creates an anchor based on the local URL.
-	 *
+     * @deprecated 2.0 Use wmvc_anchor()
+     * @see Use wmvc_anchor()
 	 * @param	string	the URL
 	 * @param	string	the link title
 	 * @param	mixed	any attributes
@@ -299,9 +323,13 @@ if ( ! function_exists('wmvc_anchor'))
 	}
 }
 
-//depracticated 
 if ( ! function_exists('btn_edit'))
 {
+
+/**
+* @deprecated 2.0 Use wmvc_btn_edit()
+* @see wmvc_btn_edit()
+*/
     function btn_edit($uri)
     {
         return anchor($uri, '<i class="glyphicon glyphicon-pencil"></i>', array('class'=>'btn btn-success btn-xs'));
@@ -316,9 +344,12 @@ if ( ! function_exists('wmvc_btn_edit'))
     }
 }
 
-//depracticated 
 if ( ! function_exists('btn_read'))
 {
+    /**
+* @deprecated 2.0 Use wmvc_btn_read()
+* @see wmvc_btn_read()
+*/
     function btn_read($uri, $title=NULL)
     {
         if(empty($title))$title=__('Read', 'wmvc_win');
@@ -337,9 +368,12 @@ if ( ! function_exists('wmvc_btn_read'))
     }
 }
 
-//depracticated 
 if ( ! function_exists('btn_open'))
 {
+/**
+* @deprecated 2.0 Use wmvc_btn_open()
+* @see wmvc_btn_open()
+*/
     function btn_open($uri, $target=NULL)
     {
         if($target === NULL)
@@ -360,9 +394,12 @@ if ( ! function_exists('wmvc_btn_open'))
     }
 }
 
-//depracticated 
 if ( ! function_exists('btn_open_ajax'))
 {
+/**
+* @deprecated 2.0 Use wmvc_btn_open_ajax()
+* @see wmvc_btn_open_ajax()
+*/
     function btn_open_ajax($uri, $target=NULL)
     {
         if($target === NULL)
@@ -383,9 +420,12 @@ if ( ! function_exists('wmvc_btn_open_ajax'))
     }
 }
 
-//depracticated 
 if ( ! function_exists('btn_delete_noconfirm'))
 {
+    /**
+* @deprecated 2.0 Use wmvc_btn_delete_noconfirm()
+* @see wmvc_btn_delete_noconfirm()
+*/
     function btn_delete_noconfirm($uri)
     {
         return anchor($uri, '<i class="glyphicon glyphicon-remove"></i> ', array('class'=>'btn btn-danger btn-xs delete_button'));
@@ -400,9 +440,12 @@ if ( ! function_exists('wmvc_btn_delete_noconfirm'))
     }
 }
 
-//depracticated 
 if ( ! function_exists('btn_delete'))
 {
+    /**
+* @deprecated 2.0 Use wmvc_btn_delete()
+* @see wmvc_btn_delete()
+*/
     function btn_delete($uri, $confirm_question = TRUE, $title='')
     {
         $target = '';
@@ -443,9 +486,12 @@ if ( ! function_exists('wmvc_btn_delete'))
     }
 }
 
-//depracticated 
 if ( ! function_exists('btn_save'))
 {
+    /**
+* @deprecated 2.0 Use wmvc_btn_save()
+* @see wmvc_btn_save()
+*/
     function btn_save($uri, $empty = '-empty')
     {
         $target = '';
@@ -472,9 +518,12 @@ if ( ! function_exists('wmvc_btn_save'))
     }
 }
 
-//depracticated 
 if ( ! function_exists('btn_block'))
 {
+    /**
+* @deprecated 2.0 Use wmvc_btn_block()
+* @see wmvc_btn_block()
+*/
     function btn_block($uri, $confirm_question = FALSE, $title='')
     {
         $target = '';
@@ -515,9 +564,12 @@ if ( ! function_exists('wmvc_btn_block'))
     }
 }
 
-//depracticated 
 if ( ! function_exists('btn_view'))
 {
+    /**
+* @deprecated 2.0 Use wmvc_btn_view()
+* @see wmvc_btn_view()
+*/
     function btn_view($uri, $confirm_question = FALSE, $title='')
     {
         if($confirm_question)
@@ -546,9 +598,12 @@ if ( ! function_exists('wmvc_btn_view'))
     }
 }
 
-//depracticated 
 if ( ! function_exists('btn_hide'))
 {
+    /**
+* @deprecated 2.0 Use wmvc_btn_hide()
+* @see wmvc_btn_hide()
+*/
     function btn_hide($uri)
     {
         $target = '';
@@ -575,9 +630,12 @@ if ( ! function_exists('wmvc_btn_hide'))
     }
 }
 
-//depracticated 
 if ( ! function_exists('get_file_extension'))
 {
+    /**
+* @deprecated 2.0 Use wmvc_get_file_extension()
+* @see wmvc_get_file_extension()
+*/
     function get_file_extension($filepath)
     {
         return substr($filepath, strrpos($filepath, '.')+1);
@@ -592,9 +650,12 @@ if ( ! function_exists('wmvc_get_file_extension'))
     }
 }
 
-//depracticated 
 if ( ! function_exists('character_hard_limiter'))
 {
+/**
+* @deprecated 2.0 Use wmvc_character_hard_limiter()
+* @see wmvc_character_hard_limiter()
+*/
     function character_hard_limiter($string, $max_len)
     {
         if(strlen($string)>$max_len)
