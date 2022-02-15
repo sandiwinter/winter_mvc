@@ -23,7 +23,7 @@ class MVC_Input {
 
         if(isset($_POST[$name]))
         {
-            return wmvc_xss_clean(stripslashes($_POST[$name]));
+            return wmvc_xss_clean(wmvc_stripslashes_deep($_POST[$name]));
         }
 
         return NULL;
