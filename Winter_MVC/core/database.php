@@ -435,6 +435,10 @@ class MVC_Database {
 			$sql_query .= 'OFFSET '.$this->query_array['offset'].' ';
 		}
 
+		if(isset($this->query_array['distinct'])) { 
+			$sql_query = str_replace('SELECT', 'SELECT DISTINCT '.implode(',', array_keys($this->query_array['distinct'])).',', $sql_query);
+		}
+
 		//wmvc_dump($sql_query);
 
 		return $sql_query;
