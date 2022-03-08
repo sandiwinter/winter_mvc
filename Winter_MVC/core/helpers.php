@@ -1257,7 +1257,7 @@ function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $te
     
     if($current_page-1 > 0)
     {
-        $output.= '<a class="prev-page button" href="'.$url.'&amp;paged='.($current_page-1).'"><span class="screen-reader-text">'.$texts['previous_page'].'</span><span aria-hidden="true">‹</span></a>';
+        $output.= '<a class="prev-page button" href="'.$url.'&amp;'.$page_var.'='.($current_page-1).'"><span class="screen-reader-text">'.$texts['previous_page'].'</span><span aria-hidden="true">‹</span></a>';
     }
     else
     {
@@ -1268,7 +1268,7 @@ function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $te
     
     if($current_page+1 <= $total_pages)
     {
-        $output.= '<a class="next-page button" href="'.$url.'&amp;paged='.($current_page+1).'"><span class="screen-reader-text">'.$texts['next_page'].'</span><span aria-hidden="true">›</span></a>';
+        $output.= '<a class="next-page button" href="'.$url.'&amp;'.$page_var.'='.($current_page+1).'"><span class="screen-reader-text">'.$texts['next_page'].'</span><span aria-hidden="true">›</span></a>';
     
     }
     else
@@ -1276,7 +1276,7 @@ function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $te
         $output.= '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">›</span>';
     }
     
-    $output.= '<a class="last-page button" href="'.$url.'&amp;paged='.$total_pages.'"><span class="screen-reader-text">'.$texts['last_page'].'</span><span aria-hidden="true">»</span></a>';
+    $output.= '<a class="last-page button" href="'.$url.'&amp;'.$page_var.'='.$total_pages.'"><span class="screen-reader-text">'.$texts['last_page'].'</span><span aria-hidden="true">»</span></a>';
     
     $output.= '</span></div>';
 
