@@ -1250,25 +1250,25 @@ function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $te
 
     $output = '';
 
-    $output.= '<div class="tablenav-pages"><span class="displaying-num">'.$total_items.' '.$texts['items'].'</span>';
+    $output.= '<div class="tablenav-pages"><span class="displaying-num">'.esc_html($total_items).' '.esc_html($texts['items']).'</span>';
     $output.= '<span class="pagination-links">';
     
-    $output.= '<a class="first-page button" href="'.$url.'"><span class="screen-reader-text">'.$texts['first_page'].'</span><span aria-hidden="true">«</span></a>';
+    $output.= '<a class="first-page button" href="'.esc_url($url).'"><span class="screen-reader-text">'.esc_html($texts['first_page']).'</span><span aria-hidden="true">«</span></a>';
     
     if($current_page-1 > 0)
     {
-        $output.= '<a class="prev-page button" href="'.$url.'&amp;'.$page_var.'='.($current_page-1).'"><span class="screen-reader-text">'.$texts['previous_page'].'</span><span aria-hidden="true">‹</span></a>';
+        $output.= '<a class="prev-page button" href="'.esc_url($url).'&amp;'.esc_attr($page_var).'='.esc_attr(($current_page-1)).'"><span class="screen-reader-text">'.esc_html($texts['previous_page']).'</span><span aria-hidden="true">‹</span></a>';
     }
     else
     {
         $output.= '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">‹</span>';
     }
 
-    $output.= '<span class="screen-reader-text">Current Page</span><span id="table-paging" class="paging-input"><span class="tablenav-paging-text">'.$current_page.' of <span class="total-pages">'.$total_pages.'</span></span></span>';
+    $output.= '<span class="screen-reader-text">Current Page</span><span id="table-paging" class="paging-input"><span class="tablenav-paging-text">'.esc_html($current_page).' of <span class="total-pages">'.esc_html($total_pages).'</span></span></span>';
     
     if($current_page+1 <= $total_pages)
     {
-        $output.= '<a class="next-page button" href="'.$url.'&amp;'.$page_var.'='.($current_page+1).'"><span class="screen-reader-text">'.$texts['next_page'].'</span><span aria-hidden="true">›</span></a>';
+        $output.= '<a class="next-page button" href="'.esc_url($url).'&amp;'.esc_attr($page_var).'='.esc_attr(($current_page+1)).'"><span class="screen-reader-text">'.esc_html($texts['next_page']).'</span><span aria-hidden="true">›</span></a>';
     
     }
     else
@@ -1276,13 +1276,12 @@ function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $te
         $output.= '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">›</span>';
     }
     
-    $output.= '<a class="last-page button" href="'.$url.'&amp;'.$page_var.'='.$total_pages.'"><span class="screen-reader-text">'.$texts['last_page'].'</span><span aria-hidden="true">»</span></a>';
+    $output.= '<a class="last-page button" href="'.esc_url($url).'&amp;'.esc_attr($page_var).'='.esc_attr($total_pages).'"><span class="screen-reader-text">'.esc_html($texts['last_page']).'</span><span aria-hidden="true">»</span></a>';
     
     $output.= '</span></div>';
 
     return $output;
 }
-
 
 function wmvc_download_file($url, $save_file_loc, $data = array())
 {   
