@@ -87,6 +87,18 @@ class MVC_Database {
 	}
 
 	/**
+	 * GROUP BY
+	 *
+	 * Sets a flag which tells the query string compiler to add DISTINCT
+	 *
+	 * @param	string	$val - column name
+	 */
+	public function group_by($val = TRUE)
+	{
+		$this->query_array['group_by'][$val] = NULL;
+	}
+
+	/**
 	 * DISTINCT
 	 *
 	 * Sets a flag which tells the query string compiler to add DISTINCT
@@ -419,6 +431,11 @@ class MVC_Database {
 			$sql_query = substr($sql_query, 0, -4);
 		}
 
+
+		if(isset($this->query_array['group_by']))
+		{
+			$sql_query .= 'GROUP BY '.implode(',', array_keys($this->query_array['group_by'])).' ';
+		}
 
 		if(isset($this->query_array['order_by']))
 		{
