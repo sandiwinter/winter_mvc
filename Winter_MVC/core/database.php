@@ -431,7 +431,6 @@ class MVC_Database {
 			$sql_query = substr($sql_query, 0, -4);
 		}
 
-
 		if(isset($this->query_array['group_by']))
 		{
 			$sql_query .= 'GROUP BY '.implode(',', array_keys($this->query_array['group_by'])).' ';
@@ -453,9 +452,11 @@ class MVC_Database {
 		}
 
 		if(isset($this->query_array['distinct'])) { 
-			$sql_query = str_replace('SELECT', 'SELECT DISTINCT '.implode(',', array_keys($this->query_array['distinct'])).',', $sql_query);
+			$pos = strpos($sql_query, 'SELECT');
+			if ($pos !== false) {
+				$sql_query = substr_replace($sql_query, 'SELECT DISTINCT '.implode(',', array_keys($this->query_array['distinct'])).',', $pos, strlen('SELECT'));
+			}
 		}
-
 		//wmvc_dump($sql_query);
 
 		return $sql_query;

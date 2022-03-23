@@ -1264,7 +1264,7 @@ function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $te
         $output.= '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">‹</span>';
     }
 
-    $output.= '<span class="screen-reader-text">Current Page</span><span id="table-paging" class="paging-input"><span class="tablenav-paging-text">'.esc_html($current_page).' of <span class="total-pages">'.esc_html($total_pages).'</span></span></span>';
+    $output.= '<span class="screen-reader-text">Current Page</span><span id="table-paging" class="paging-input"><span class="tablenav-paging-text">'.esc_html($current_page).' of <span class="total-pages">'.esc_html(($total_pages) ? $total_pages : 1).'</span></span></span>';
     
     if($current_page+1 <= $total_pages)
     {
