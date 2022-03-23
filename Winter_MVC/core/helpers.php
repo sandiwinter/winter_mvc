@@ -1309,8 +1309,18 @@ function wmvc_download_file($url, $save_file_loc, $data = array())
         'Content-Type: multipart/form-data',
      ));
     
+    //Disable CURLOPT_SSL_VERIFYHOST and CURLOPT_SSL_VERIFYPEER by
+    //setting them to false.
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    
     // Perform a cURL session 
     $result = curl_exec($ch); 
+
+    if(curl_errno($ch))
+    {
+        //exit(curl_error($ch));
+    }
 
     // Closes a cURL session and frees all resources 
     curl_close($ch); 
@@ -1358,6 +1368,12 @@ function wmvc_api_call($method, $url, $data, $headers = false){
     }
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+
+    //Disable CURLOPT_SSL_VERIFYHOST and CURLOPT_SSL_VERIFYPEER by
+    //setting them to false.
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
     // EXECUTE:
     $result = curl_exec($curl);
     if(!$result){return FALSE;}
