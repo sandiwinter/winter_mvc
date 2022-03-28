@@ -21,15 +21,15 @@ $winter_mvc_active_plugins[dirname( __FILE__ )] =
                      );
 
 // get latest version
-$latest_version = array();
+$winter_mvc_latest_version = array();
 
 foreach($winter_mvc_active_plugins as $lib_dir => $lib_data)
 {
     if(file_exists($lib_data['winter_mvc_file']) && isset($lib_data['winter_mvc_version']))
     {
-        if(empty($latest_version) || $latest_version['winter_mvc_version'] < $lib_data['winter_mvc_version'])
+        if(empty($winter_mvc_latest_version) || $winter_mvc_latest_version['winter_mvc_version'] < $lib_data['winter_mvc_version'])
         {
-            $latest_version = $lib_data;
+            $winter_mvc_latest_version = $lib_data;
         }
     }
     else
@@ -40,7 +40,7 @@ foreach($winter_mvc_active_plugins as $lib_dir => $lib_data)
 
 update_option( 'winter_mvc_active_plugins', $winter_mvc_active_plugins );
 
-if( empty($Winter_MVC) && $latest_version['winter_mvc_version'] == $Winter_MVC_version_this )
+if( empty($Winter_MVC) && $winter_mvc_latest_version['winter_mvc_version'] == $Winter_MVC_version_this )
 {
     define( 'WINTER_MVC_PATH', dirname( __FILE__ ) );
     
