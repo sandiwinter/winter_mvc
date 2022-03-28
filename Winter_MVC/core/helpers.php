@@ -908,6 +908,74 @@ function wmvc_upload_media($field_name, $image_id)
     <?php
 }
 
+function wmvc_upload_file($field_name, $file_id)
+{
+    static $media_element_counter = 0;
+        
+    $media_element_counter++;
+    
+    $img_field = $field_name.'_'.$media_element_counter;
+    
+    wp_enqueue_script(  'wpmediaelement' );
+    wp_enqueue_media();
+
+    ?>
+    <div id="<?php echo esc_attr($field_name); ?>meta-box-id" class="postbox-upload">
+    <?php
+    // Get WordPress' media upload URL
+    $upload_link = '#';
+    
+    // Get the file src
+        
+    // Get the file src
+    $your_file_src = get_attached_file(intval( $file_id));
+
+    // For convenience, see if the array is valid
+    $you_have_file = false;
+    if($your_file_src)
+        $you_have_file = basename($your_file_src);
+
+    ?>
+    
+    <!-- Your file container, which can be manipulated with js -->
+    <div class="custom-img-container">
+        <?php if ( $you_have_file ) : ?>
+            <?php echo esc_html($you_have_file); ?>
+        <?php endif; ?>
+    </div>
+    
+    <?php //if(sw_user_in_role('administrator')):  ?>
+    <!-- Your add & remove file links -->
+    <p class="hide-if-no-js">
+        <a class="upload-custom-img <?php if ( $you_have_file  ) { echo 'hidden'; } ?>" 
+        href="<?php echo esc_url($upload_link) ?>">
+            <?php echo esc_html__('Select file','wmvc_win') ?>
+        </a>
+        <a class="delete-custom-img <?php if ( ! $you_have_file  ) { echo 'hidden'; } ?>" 
+        href="#">
+            <?php echo esc_html__('Remove file','wmvc_win') ?>
+        </a>
+    </p>
+    <?php //endif; ?>
+    
+    <!-- A hidden input to set and post the chosen file id -->
+    <input class="file_id" type="hidden" id="<?php echo esc_html($field_name); ?>" name="<?php echo esc_html($field_name); ?>" value="<?php echo esc_html($file_id); ?>" />
+    </div>
+    
+    <?php
+    $custom_js ='';
+    $custom_js .=" jQuery(function($) {
+                        if( typeof jQuery.fn.wpMediaElement == 'function')
+                            $('#".esc_js($field_name)."meta-box-id.postbox-upload').wpMediaElement({'imgIdInputSelector':'.file_id','isfileUpload':'true'});
+                    });";
+    
+    echo "<script>".$custom_js."</script>";
+
+    ?>
+
+    <?php
+}
+
 function wmvc_upload_multiple($field_name, $image_ids='')
 {
     static $media_element_counter = 0;
@@ -917,6 +985,7 @@ function wmvc_upload_multiple($field_name, $image_ids='')
     $img_field = $field_name.'_'.$media_element_counter;
     
     wp_enqueue_script(  'wpmediamultiple' );
+    wp_enqueue_script(  'jquery-ui-mouse' );
     wp_enqueue_media();
 
     ?>

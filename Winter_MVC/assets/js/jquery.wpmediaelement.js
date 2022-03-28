@@ -13,7 +13,8 @@ jQuery.fn.wpMediaElement = function (options)
         delImgLink: null,
         imgContainer: null,
         imgIdInput: null,
-        frame: null
+        frame: null,
+        isfileUpload: false,
     };
     
     var options = jQuery.extend(defaults, options);
@@ -93,10 +94,13 @@ jQuery.fn.wpMediaElement = function (options)
     {
       // Get media attachment details from the frame state
       var attachment = options.frame.state().get('selection').first().toJSON();
-    
+      
       // Send the attachment URL to our custom image input field.
-      options.imgContainer.append( '<img src="'+attachment.url+'" alt="" style="max-width:100%;"/>' );
-    
+      if (options.isfileUpload) {
+        options.imgContainer.append( attachment.name ); 
+      } else {
+        options.imgContainer.append( '<img src="'+attachment.url+'" alt="" style="max-width:100%;"/>' );
+      }
       // Send the attachment id to our hidden input
       options.imgIdInput.val( attachment.id );
     
