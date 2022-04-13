@@ -29,7 +29,7 @@ class MVC_Loader {
     /**
      * db object
      *
-     * @var array
+     * @var object
      */
     public $db = NULL;
 
