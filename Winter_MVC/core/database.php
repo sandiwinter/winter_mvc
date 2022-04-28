@@ -446,7 +446,7 @@ class MVC_Database {
 			$sql_query .= 'LIMIT '.$this->query_array['limit'].' ';
 		}
 
-		if(isset($this->query_array['offset']))
+		if(isset($this->query_array['offset']) && isset($this->query_array['limit']))
 		{
 			$sql_query .= 'OFFSET '.$this->query_array['offset'].' ';
 		}
