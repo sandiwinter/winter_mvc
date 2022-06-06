@@ -115,14 +115,15 @@ if ( ! class_exists( 'Winter_MVC_Model' ) ):
             return $this->db->insert($this->_table_name, $data);
         }
 
-        public function prepare_data($data, $insert_fields)
+        public function prepare_data($data, $insert_fields, $xss_clean = TRUE)
         {
             if(!is_array($data))return array();
             if(!is_array($insert_fields))return array();
 
             $prepared_data = array();
 
-            $data = wmvc_xss_clean_array($data);
+            if($xss_clean)
+                $data = wmvc_xss_clean_array($data);
 
             foreach($insert_fields as $key=>$val)
             {
