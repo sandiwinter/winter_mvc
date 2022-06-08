@@ -59,9 +59,9 @@ class MVC_Loader {
 
     public function register_scripts()
     {
-        wp_register_script( 'wpmediaelement_file',  plugins_url(plugin_basename(WINTER_MVC_PATH).'/assets/js/jquery.wpmediaelement_file.js'), false, false, false );
-        wp_register_script( 'wpmediaelement',  plugins_url(plugin_basename(WINTER_MVC_PATH).'/assets/js/jquery.wpmediaelement.js'), false, false, false );
-        wp_register_script( 'wpmediamultiple',  plugins_url(plugin_basename(WINTER_MVC_PATH).'/assets/js/jquery.wpmediamultiple.js'), false, false, false );
+        wp_register_script( 'wpmediaelement_file',  plugins_url(plugin_basename(WINTER_MVC_PATH).'/assets/js/jquery.wpmediaelement_file.js'), array(), false, false );
+        wp_register_script( 'wpmediaelement',  plugins_url(plugin_basename(WINTER_MVC_PATH).'/assets/js/jquery.wpmediaelement.js'), array(), false, false );
+        wp_register_script( 'wpmediamultiple',  plugins_url(plugin_basename(WINTER_MVC_PATH).'/assets/js/jquery.wpmediamultiple.js'), array(), false, false );
     }
     
     public function load_helper($filename)

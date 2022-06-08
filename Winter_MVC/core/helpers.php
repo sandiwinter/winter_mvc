@@ -879,11 +879,11 @@ function wmvc_upload_media($field_name, $image_id)
     <?php //if(sw_user_in_role('administrator')):  ?>
     <!-- Your add & remove image links -->
     <p class="hide-if-no-js">
-        <a class="upload-custom-img <?php if ( $you_have_img  ) { echo 'hidden'; } ?>" 
+        <a class="button button-primary upload-custom-img <?php if ( $you_have_img  ) { echo 'hidden'; } ?>" 
         href="<?php echo esc_url($upload_link) ?>">
             <?php echo esc_html__('Select image','wmvc_win') ?>
         </a>
-        <a class="delete-custom-img <?php if ( ! $you_have_img  ) { echo 'hidden'; } ?>" 
+        <a class="button button-secondary delete-custom-img <?php if ( ! $you_have_img  ) { echo 'hidden'; } ?>"
         href="#">
             <?php echo esc_html__('Remove image','wmvc_win') ?>
         </a>
@@ -1514,6 +1514,27 @@ if ( ! function_exists('wmvc_filter_decimal'))
         }
 
         return $string;
+	}
+}
+
+if(!function_exists('wmvc_get_option')) {
+    /**
+	 * Cached and get wp options
+	 *
+	 * @param      string    option       Option key
+	 * @return     string    alt or title
+	 */
+
+	function wmvc_get_option($option_key = '') {
+        return get_option($option_key);
+        
+        if(isset($options[$option_key])) {
+            return $options[$option_key];
+        }
+
+        $options[$option_key] = get_option($option_key);
+
+		return $options[$option_key];
 	}
 }
 
