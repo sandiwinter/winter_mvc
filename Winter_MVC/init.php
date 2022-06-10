@@ -3,13 +3,13 @@
 /**
  * Winter_MVC library
  *
- * @version 2.2
+ * @version 2.3
  *
  * @author SWIT
  * @link https://github.com/sandiwinter/winter_mvc
  */
 
-$Winter_MVC_version_this = 2.2;
+$Winter_MVC_version_this = 2.3;
 
 global $Winter_MVC;
 
@@ -41,6 +41,17 @@ foreach($winter_mvc_active_plugins as $lib_dir => $lib_data)
 update_option( 'winter_mvc_active_plugins', $winter_mvc_active_plugins );
 
 if( empty($Winter_MVC) && $winter_mvc_latest_version['winter_mvc_version'] == $Winter_MVC_version_this )
+{
+    define( 'WINTER_MVC_PATH', dirname( __FILE__ ) );
+    
+    require_once 'core/mvc_loader.php';
+    $Winter_MVC = new MVC_Loader();
+}
+elseif(file_exists($winter_mvc_latest_version['winter_mvc_file']))
+{
+    require_once $winter_mvc_latest_version['winter_mvc_file'];
+}
+else
 {
     define( 'WINTER_MVC_PATH', dirname( __FILE__ ) );
     
