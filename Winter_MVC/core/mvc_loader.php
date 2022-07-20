@@ -130,7 +130,16 @@ class MVC_Loader {
 
     public function view($view_file, &$data, $output = TRUE)
     {
-        if(empty($this->plugin_directory))
+       
+        if(is_child_theme() && file_exists(get_stylesheet_directory().'/wpdirectorykit/application/views/'.$view_file.'.php'))
+        {
+            $file = get_stylesheet_directory().'/wpdirectorykit/application/views/'.$view_file.'.php';
+        }
+        elseif(file_exists(get_template_directory().'/wpdirectorykit/application/views/'.$view_file.'.php'))
+        {
+            $file = get_template_directory().'/wpdirectorykit/application/views/'.$view_file.'.php';
+        }
+        elseif(empty($this->plugin_directory))
         {
             $file = WINTER_MVC_PATH.'/../../application/views/'.$view_file.'.php';
         }
