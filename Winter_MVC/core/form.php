@@ -89,6 +89,57 @@ class MVC_Form {
         return FALSE;
     }
 
+    public function run_json($rules)
+    {
+        $postBody = file_get_contents('php://input');
+        $data_json = json_decode($postBody);
+        $__POST = (array) $data_json;
+
+        if(!isset($__POST))return FALSE;
+        if(count($__POST)==0)return FALSE;
+
+        $this->rules = $rules;
+
+        foreach($rules as $key=>$rule)
+        {
+            $field_rules = explode('|', $rule['rules']);
+
+            if(isset($__POST[$rule['field']]) && !empty($__POST[$rule['field']]))
+            {
+                foreach($field_rules as $one_rule)
+                {
+                    if(!empty($one_rule))
+                    if(function_exists('is_'.$one_rule))
+                    {
+                        if(call_user_func('is_'.$one_rule, $__POST[$rule['field']]) === FALSE)
+                        {
+                            if(isset($this->error_messages[$one_rule]))
+                            {
+                                $this->messages[] = $this->error_messages[$one_rule];
+                            }
+                            else
+                            {
+                                $this->messages[] = __('Field', 'wmvc_win').' '.$rule['label'].' '.__('must be', 'wmvc_win').' '.__($one_rule, 'wmvc_win');
+                            }
+                        }
+                    }
+                    else
+                    {
+                        $this->messages[] = __('Missing function for rule:', 'wmvc_win').' is_'.$one_rule;
+                    }
+                }
+            }
+            elseif(in_array('required', $field_rules))
+            {
+                $this->messages[] = __('Field is required:', 'wmvc_win').' '.$rule['label'];
+            }
+        }
+
+        if(count($this->messages) == 0)return TRUE;
+
+        return FALSE;
+    }
+
     public function messages($extra = 'class="alert alert-danger"', $success_message = NULL, $success_extra = 'class="alert alert-success"')
     {
         if(!isset($_GET['is_updated'])){
@@ -109,6 +160,29 @@ class MVC_Form {
         {
             echo '<p '.$extra.'>'.$message.'</p>';
         }
+    }
+
+    public function messages_api($success_message = NULL)
+    {
+        $postBody = file_get_contents('php://input');
+        $data_json = json_decode($postBody);
+        $__POST = (array) $data_json;
+
+        if(!isset($_GET['is_updated'])){
+            if(!isset($__POST))return FALSE;
+            if(count($__POST)==0)return FALSE;
+        }
+
+        if($success_message === NULL)
+            $success_message = __('Successfully saved', 'wmvc_win');
+
+
+        if(count($this->messages) == 0)
+        {
+            return $success_message;
+        }
+
+        return join("\n", $this->messages);
     }
 
 

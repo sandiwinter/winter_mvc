@@ -82,3 +82,22 @@ Create also your view file:
 ```
 wp-content\plugins\{your-plugin-name}\application\views\{your-plugin-name}\index.php
 ```
+
+# Changelog
+
+v2.4, 29-10-2022
+
+- Form validation for json mobile APIs
+
+v2.3, 20-07-2022
+
+- Child theme support for view files
+- Versioning improvements
+
+v2.2, 08-06-2022
+
+- XSS improvements
+- DB limit query improvements
+- Media Element improvement
+
+...
