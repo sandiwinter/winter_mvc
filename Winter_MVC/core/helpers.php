@@ -1001,8 +1001,12 @@ function wmvc_upload_multiple($field_name, $image_ids='')
 
     foreach(explode(',', $image_ids) as $image_id)
     {
-        if(is_numeric($image_id))
-        $your_img_src[$image_id] = wp_get_attachment_image_src( $image_id, 'full' );
+        if(is_numeric($image_id)){
+            if(false)
+                $your_img_src[$image_id] = wp_get_attachment_image_src( $image_id, 'full' );
+            
+            $your_img_src[$image_id] = wp_get_attachment_url( $image_id, 'full' );
+        }
     }
     
 
@@ -1013,10 +1017,23 @@ function wmvc_upload_multiple($field_name, $image_ids='')
     <!-- Your image container, which can be manipulated with js -->
     <div class="custom-img-container winter_mvc-media">
         <?php if($you_have_img)foreach($your_img_src as $image_id => $img_src) : ?>
-            <div class="winter_mvc-media-card" data-media-id="<?php echo esc_attr($image_id);?>">
-                <img src="<?php echo esc_html($img_src[0]); ?>" alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"/>
-                <a href="#" class="remove"></a>
-            </div>
+            <?php
+            
+            $filetype = wp_check_filetype(str_replace(WP_CONTENT_URL, WP_CONTENT_DIR, $img_src));
+            if(strpos($filetype['type'], 'video') !== FALSE):?>
+                <div class="winter_mvc-media-card" data-media-id="<?php echo esc_attr($image_id);?>">
+                    <video src="<?php echo esc_html($img_src); ?>" controls alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"></video>
+                    <a href="#" class="remove"></a>
+                    <span href="#" class="move"><span class="dashicons dashicons-editor-expand"></span></span>
+                </div>
+            <?php else:?>
+                <div class="winter_mvc-media-card" data-media-id="<?php echo esc_attr($image_id);?>">
+                    <img src="<?php echo esc_html($img_src); ?>" alt="<?php echo esc_attr__('thumb', 'wmvc_win');?>" style="max-width:100%;" class="thumbnail"/>
+                    <a href="#" class="remove"></a>
+                </div>
+            <?php endif;?>
+
+
         <?php endforeach; ?>
     </div>
     <br style="clear:both;" />

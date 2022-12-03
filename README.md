@@ -85,6 +85,10 @@ wp-content\plugins\{your-plugin-name}\application\views\{your-plugin-name}\index
 
 # Changelog
 
+v2.5, 03-12-2022
+
+- Upload multiple added support video upload
+
 v2.4, 29-10-2022
 
 - Form validation for json mobile APIs

@@ -45,7 +45,7 @@ jQuery.fn.wpMediaMultiple = function (options)
 		options.frame = wp.media({
 			title: 'Select or Upload Media Of Your Chosen Persuasion',
 			library: {
-				type: 'image'
+				type: [ 'video', 'image' ]
 			},
 			button: {
 				text: 'Use this media'
@@ -102,8 +102,12 @@ jQuery.fn.wpMediaMultiple = function (options)
         var input_values = options.imgIdInput.val();
 
         for (var item in attachments) {
-            //console.log(attachments[item]);
-            options.imgContainer.append( '<div class="winter_mvc-media-card" data-media-id="'+attachments[item].id+'"><img src="'+attachments[item].url+'" alt="" class="thumbnail"/><a href="#" class="remove"></a></div>' );
+            if(attachments[item].mime.indexOf('video') != -1) {
+                options.imgContainer.append( '<div class="winter_mvc-media-card" data-media-id="'+attachments[item].id+'"><video src="'+attachments[item].url+'" controls class="thumbnail"></video><a href="#" class="remove"></a><span href="#" class="move"><span class="dashicons dashicons-editor-expand"></span></span></div>' );
+            } else {
+                options.imgContainer.append( '<div class="winter_mvc-media-card" data-media-id="'+attachments[item].id+'"><img src="'+attachments[item].url+'" alt="" class="thumbnail"/><a href="#" class="remove"></a></div>' );
+            }
+            
             if (input_values.slice(-1) != ',')
                 input_values += ',';
             
