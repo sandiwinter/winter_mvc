@@ -42,16 +42,18 @@ jQuery.fn.wpMediaMultiple = function (options)
     {
         console.log('init_start'+options.obj.attr('id'));
         
-		options.frame = wp.media({
-			title: 'Select or Upload Media Of Your Chosen Persuasion',
-			library: {
-				type: [ 'video', 'image' ]
-			},
-			button: {
-				text: 'Use this media'
-			},
-			multiple: true
-		});
+        if(options.frame == null) {
+            options.frame = wp.media({
+                title: 'Select or Upload Media Of Your Chosen Persuasion',
+                library: {
+                    type: [ 'video', 'image' ]
+                },
+                button: {
+                    text: 'Use this media'
+                },
+                multiple: true
+            });
+        }
         
         options.frame.on( 'open', updateFrame ).state('library').on( 'select', selectImg );
         

@@ -43,17 +43,19 @@ jQuery.fn.wpMediaElement = function (options)
     {
         console.log('init_start'+options.obj.attr('id'));
         
-		options.frame = wp.media({
-			title: 'Select or Upload Media Of Your Chosen Persuasion',
-			library: {
-				type: 'image'
-			},
-			button: {
-				text: 'Use this media'
-			},
-			multiple: false
-		});
-        
+        if(options.frame == null) {
+            options.frame = wp.media({
+                title: 'Select or Upload Media Of Your Chosen Persuasion',
+                library: {
+                    type: 'image'
+                },
+                button: {
+                    text: 'Use this media'
+                },
+                multiple: false
+            });
+        }
+
         options.frame.on( 'open', updateFrame ).state('library').on( 'select', selectImg );
         
 		options.addImgLink.on( 'click', function( e ) {
