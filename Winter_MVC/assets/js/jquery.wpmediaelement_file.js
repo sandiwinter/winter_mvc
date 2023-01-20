@@ -13,11 +13,19 @@ jQuery.fn.wpMediaElementFile = function (options)
         delImgLink: null,
         imgContainer: null,
         imgIdInput: null,
-        frame: null
+        frame: {}
     };
-    console.log(options);
-    var options = jQuery.extend(defaults, options);
     
+    var options = jQuery.extend(defaults, options);
+
+    if(typeof options.frame.title == 'undefined') {
+        options.frame.title = 'Select or Upload Media Of Your Chosen Persuasion';
+    }
+
+    if(typeof options.frame.button == 'undefined') {
+        options.frame.button = 'Use this media';
+    }
+
     /* Public API */
     this.getCurrent = function()
     {
@@ -41,20 +49,18 @@ jQuery.fn.wpMediaElementFile = function (options)
     function init_start()
     {
         console.log('init_start'+options.obj.attr('id'));
-        
-        if(options.frame == null) {
-            options.frame = wp.media({
-                title: 'Select or Upload Media Of Your Chosen Persuasion',
-                library: {
-                    type: 'image'
-                },
-                button: {
-                    text: 'Use this media'
-                },
-                multiple: false
-            });
-        }
-        
+    
+        options.frame = wp.media({
+            title: options.frame.title,
+            library: {
+                type: 'image'
+            },
+            button: {
+                text: options.frame.button
+            },
+            multiple: false
+        });
+
         options.frame.on( 'open', updateFrame ).state('library').on( 'select', selectImg );
         
 		options.addImgLink.on( 'click', function( e ) {
