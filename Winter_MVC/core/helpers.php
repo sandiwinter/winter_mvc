@@ -1278,13 +1278,11 @@ function wmvc_xml_encode($array)
     }
 }
 
-function wmvc_add_wp_image($filename_source)
+function wmvc_add_wp_image($filename_source, $parent_post_id = 0)
 {
     $file = $filename_source;
     $filename = basename($file);
-    
-    $parent_post_id = 0;
-    
+
     $upload_file = wp_upload_bits($filename, null, file_get_contents($file));
     if (!$upload_file['error']) {
     	$wp_filetype = wp_check_filetype($filename, null );
