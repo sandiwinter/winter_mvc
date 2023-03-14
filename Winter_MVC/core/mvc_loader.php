@@ -9,7 +9,7 @@
  * @link https://github.com/sandiwinter/winter_mvc
  */
 if ( ! class_exists( 'MVC_Loader' ) ):
-
+#[AllowDynamicProperties]
 class MVC_Loader {
 
     /**
@@ -35,6 +35,10 @@ class MVC_Loader {
 
     public $plugin_directory = NULL;
 
+    public function __set(string $name, mixed $value): void {
+
+    }
+    
     public function __construct($plugin_directory = NULL)
     {
         $this->plugin_directory = $plugin_directory;

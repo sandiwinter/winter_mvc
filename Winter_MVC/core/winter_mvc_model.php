@@ -2,7 +2,7 @@
 
 
 if ( ! class_exists( 'Winter_MVC_Model' ) ):
-
+    #[AllowDynamicProperties]
     class Winter_MVC_Model {
     
         public $_table_name = 'my_table_name';
@@ -21,6 +21,10 @@ if ( ! class_exists( 'Winter_MVC_Model' ) ):
          */
         protected $db = NULL;
 
+        public function __set(string $name, mixed $value): void {
+
+        }
+        
         public function __construct(){
             global $Winter_MVC;
 

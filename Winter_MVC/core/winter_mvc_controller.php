@@ -2,7 +2,7 @@
 
 
 if ( ! class_exists( 'Winter_MVC_Controller' ) ):
-
+    #[AllowDynamicProperties]
     class Winter_MVC_Controller {
     
         /**
@@ -23,6 +23,9 @@ if ( ! class_exists( 'Winter_MVC_Controller' ) ):
          */
         protected $db = NULL;
 
+        public function __set(string $name, mixed $value): void {
+
+        }
 
         public function __construct(){
             global $Winter_MVC;
