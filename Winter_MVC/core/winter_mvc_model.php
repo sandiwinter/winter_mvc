@@ -20,10 +20,6 @@ if ( ! class_exists( 'Winter_MVC_Model' ) ):
          * @var object
          */
         protected $db = NULL;
-
-        public function __set(string $name, mixed $value): void {
-
-        }
         
         public function __construct(){
             global $Winter_MVC;

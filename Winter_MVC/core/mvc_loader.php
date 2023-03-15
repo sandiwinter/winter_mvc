@@ -34,10 +34,6 @@ class MVC_Loader {
     public $db = NULL;
 
     public $plugin_directory = NULL;
-
-    public function __set(string $name, mixed $value): void {
-
-    }
     
     public function __construct($plugin_directory = NULL)
     {
