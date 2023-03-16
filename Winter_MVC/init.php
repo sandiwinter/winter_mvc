@@ -17,15 +17,23 @@ $winter_mvc_active_plugins = get_option( 'winter_mvc_active_plugins', array() );
 
 $winter_mvc_active_plugins[dirname( __FILE__ )] = 
                 array('winter_mvc_version' => $Winter_MVC_version_this,
-                      'winter_mvc_file' => __FILE__ 
+                      'winter_mvc_file' => substr(__FILE__, strripos(__FILE__, basename( plugin_dir_path(  dirname( __FILE__ , 2 ) ) ))) 
                      );
-
+  
 // get latest version
 $winter_mvc_latest_version = array();
 
 foreach($winter_mvc_active_plugins as $lib_dir => $lib_data)
-{
-    if(file_exists($lib_data['winter_mvc_file']) && isset($lib_data['winter_mvc_version']))
+{   
+    /* compatible with old */
+    if(stripos($lib_data['winter_mvc_file'], 'plugins') !== FALSE && file_exists($lib_data['winter_mvc_file']) && isset($lib_data['winter_mvc_version']))
+    {
+        if(empty($winter_mvc_latest_version) || $winter_mvc_latest_version['winter_mvc_version'] < $lib_data['winter_mvc_version'])
+        {
+            $winter_mvc_latest_version = $lib_data;
+        }
+    }
+    if(file_exists(WP_PLUGIN_DIR."\\".$lib_data['winter_mvc_file']) && isset($lib_data['winter_mvc_version']))
     {
         if(empty($winter_mvc_latest_version) || $winter_mvc_latest_version['winter_mvc_version'] < $lib_data['winter_mvc_version'])
         {
@@ -47,9 +55,13 @@ if( empty($Winter_MVC) && $winter_mvc_latest_version['winter_mvc_version'] == $W
     require_once 'core/mvc_loader.php';
     $Winter_MVC = new MVC_Loader();
 }
-elseif(file_exists($winter_mvc_latest_version['winter_mvc_file']))
+elseif(stripos($winter_mvc_latest_version['winter_mvc_file'], 'plugins') !== FALSE && file_exists($winter_mvc_latest_version['winter_mvc_file']))
 {
     require_once $winter_mvc_latest_version['winter_mvc_file'];
+}
+elseif(file_exists(WP_PLUGIN_DIR."\\".$winter_mvc_latest_version['winter_mvc_file']))
+{
+    require_once WP_PLUGIN_DIR."\\".$winter_mvc_latest_version['winter_mvc_file'];
 }
 else
 {
