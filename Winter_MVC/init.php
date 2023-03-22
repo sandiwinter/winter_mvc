@@ -33,7 +33,7 @@ foreach($winter_mvc_active_plugins as $lib_dir => $lib_data)
             $winter_mvc_latest_version = $lib_data;
         }
     }
-    if(file_exists(WP_PLUGIN_DIR."\\".$lib_data['winter_mvc_file']) && isset($lib_data['winter_mvc_version']))
+    if(file_exists(WP_PLUGIN_DIR."/".$lib_data['winter_mvc_file']) && isset($lib_data['winter_mvc_version']))
     {
         if(empty($winter_mvc_latest_version) || $winter_mvc_latest_version['winter_mvc_version'] < $lib_data['winter_mvc_version'])
         {
@@ -59,9 +59,9 @@ elseif(stripos($winter_mvc_latest_version['winter_mvc_file'], 'plugins') !== FAL
 {
     require_once $winter_mvc_latest_version['winter_mvc_file'];
 }
-elseif(file_exists(WP_PLUGIN_DIR."\\".$winter_mvc_latest_version['winter_mvc_file']))
+elseif(file_exists(WP_PLUGIN_DIR."/".$winter_mvc_latest_version['winter_mvc_file']))
 {
-    require_once WP_PLUGIN_DIR."\\".$winter_mvc_latest_version['winter_mvc_file'];
+    require_once WP_PLUGIN_DIR."/".$winter_mvc_latest_version['winter_mvc_file'];
 }
 else
 {
