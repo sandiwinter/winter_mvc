@@ -85,6 +85,12 @@ wp-content\plugins\{your-plugin-name}\application\views\{your-plugin-name}\index
 
 # Changelog
 
+v2.7, 08-06-2023
+
+- update database improved with where part
+- loader improvement
+- PHP 8.2 compatibility improvement
+
 v2.5, 03-12-2022
 
 - Upload multiple added support video upload

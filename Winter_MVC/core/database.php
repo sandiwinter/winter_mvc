@@ -556,7 +556,21 @@ class MVC_Database {
 
 		$query = substr($query, 0, -1);
 
-		$query.= 'WHERE '.$primary_field.'='.$id.';';
+        if(is_array($id))
+        {
+            $where_part = array();
+            foreach($id as $key=>$val)
+            {
+                $where_part[] = ' '.$key.' = \''.$val.'\' ';
+            }
+
+            $query.= 'WHERE '.join(' AND ', $where_part).';';
+        }
+        else
+        {
+            $query.= 'WHERE '.$primary_field.'='.$id.';';
+        }
+		
 
 		//echo $query;exit();
 
