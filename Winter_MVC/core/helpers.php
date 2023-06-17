@@ -774,7 +774,6 @@ function wmvc_show_data($field_name, &$db_value = NULL, $default = '', $xss_clea
 
         return wmvc_xss_clean(stripslashes($_POST[$field_name]));
     }
-        
 
     if(is_array($db_value))
     {
@@ -1309,7 +1308,7 @@ function wmvc_add_wp_image($filename_source, $parent_post_id = 0)
 function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $texts = array())
 {
     $current_page = 1;
-
+    
     if(isset($_GET[$page_var]))
         $current_page = intval(wmvc_xss_clean($_GET[$page_var]));
 
@@ -1331,14 +1330,14 @@ function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $te
 
     // total pages
     $total_pages = intval($total_items/$per_page+0.99);
-
     $output = '';
 
     $output.= '<div class="tablenav-pages"><span class="displaying-num">'.esc_html($total_items).' '.esc_html($texts['items']).'</span>';
     $output.= '<span class="pagination-links">';
     
-    $output.= '<a class="first-page button" href="'.esc_url($url).'"><span class="screen-reader-text">'.esc_html($texts['first_page']).'</span><span aria-hidden="true">«</span></a>';
-    
+    if($current_page != 1)
+        $output.= '<a class="first-page button" href="'.esc_url($url).'"><span class="screen-reader-text">'.esc_html($texts['first_page']).'</span><span aria-hidden="true">«</span></a>';
+   
     if($current_page-1 > 0)
     {
         $output.= '<a class="prev-page button" href="'.esc_url($url).'&amp;'.esc_attr($page_var).'='.esc_attr(($current_page-1)).'"><span class="screen-reader-text">'.esc_html($texts['previous_page']).'</span><span aria-hidden="true">‹</span></a>';
@@ -1349,7 +1348,7 @@ function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $te
     }
 
     $output.= '<span class="screen-reader-text">Current Page</span><span id="table-paging" class="paging-input"><span class="tablenav-paging-text">'.esc_html($current_page).' of <span class="total-pages">'.esc_html(($total_pages) ? $total_pages : 1).'</span></span></span>';
-    
+
     if($current_page+1 <= $total_pages)
     {
         $output.= '<a class="next-page button" href="'.esc_url($url).'&amp;'.esc_attr($page_var).'='.esc_attr(($current_page+1)).'"><span class="screen-reader-text">'.esc_html($texts['next_page']).'</span><span aria-hidden="true">›</span></a>';
@@ -1359,8 +1358,9 @@ function wmvc_wp_paginate($total_items, $per_page = 10, $page_var = 'paged', $te
     {
         $output.= '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">›</span>';
     }
-    
-    $output.= '<a class="last-page button" href="'.esc_url($url).'&amp;'.esc_attr($page_var).'='.esc_attr($total_pages).'"><span class="screen-reader-text">'.esc_html($texts['last_page']).'</span><span aria-hidden="true">»</span></a>';
+
+    if($current_page != $total_pages)
+        $output.= '<a class="last-page button" href="'.esc_url($url).'&amp;'.esc_attr($page_var).'='.esc_attr($total_pages).'"><span class="screen-reader-text">'.esc_html($texts['last_page']).'</span><span aria-hidden="true">»</span></a>';
     
     $output.= '</span></div>';
 
@@ -1552,6 +1552,24 @@ if(!function_exists('wmvc_get_option')) {
 		return $options[$option_key];
 	}
 }
+
+if ( ! function_exists('wmvc_is_phone'))
+{
+    // Validation phone "-+()0123456789"
+    /**
+    * @param string $value phone in string
+    * @return bool
+    */
+
+    
+    function wmvc_is_phone($value = '') {
+        if(preg_match("/^[.+]{0,1}[0-9-)(]{0,25}$/", $value)) {
+            return true;
+        }
+        
+        return false;
+    }	
+}	
 
 
 ?>
