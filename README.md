@@ -85,7 +85,7 @@ wp-content\plugins\{your-plugin-name}\application\views\{your-plugin-name}\index
 
 # Changelog
 
-v2.7, 08-06-2023
+v2.7, 17-06-2023
 
 - update database improved with where part
 - loader improvement

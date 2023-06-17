@@ -575,6 +575,7 @@ class MVC_Database {
 		//echo $query;exit();
 
 		$this->query($query);
+        $this->_reset_select();
 
 		return $id;
 	}
@@ -645,6 +646,7 @@ class MVC_Database {
 		$query = 'UPDATE ' . '' . $table_name . ' SET ' . substr($cases, 0, -2) . '';
 
         $this->query($query);
+        $this->_reset_select();
 	}
 
 
