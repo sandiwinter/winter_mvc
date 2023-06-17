@@ -85,6 +85,22 @@ wp-content\plugins\{your-plugin-name}\application\views\{your-plugin-name}\index
 
 # Changelog
 
+v3.3, 17-06-2023
+
+Form validation
+- added more rules, like:
+  is_numerical - is number field
+  is_phone - is phone field
+  is_email - is email field
+  min_length[n] - min length (characters), where n is number
+  max_length[n] - max length (characters), where n is number
+  min_number[n] - min length (number), where n is number
+  max_number[n] - max length (number), where n is number
+- pagination implement
+- helper function wmvc_is_phone
+- support video upload
+- translate text
+
 v2.7, 17-06-2023
 
 - update database improved with where part
