@@ -57,7 +57,16 @@ class MVC_Form {
             {
                 foreach($field_rules as $one_rule)
                 {
-                    if(!empty($one_rule))
+                    if(empty($one_rule)) continue;
+
+                    $wmvc_rule = '';
+                    $wmvc_rule_parameter = '';
+
+                    sscanf($one_rule, '%[^[][', $wmvc_rule);
+                    if((bool)preg_match_all('/\[(.*?)\]/', $one_rule, $matches) === TRUE) {
+                        $wmvc_rule_parameter=trim($matches[1][0]);
+                    }
+
                     if(function_exists('is_'.$one_rule))
                     {
                         if(call_user_func('is_'.$one_rule, $_POST[$rule['field']]) === FALSE)
@@ -69,6 +78,23 @@ class MVC_Form {
                             else
                             {
                                 $this->messages[] = __('Field', 'wmvc_win').' '.$rule['label'].' '.__('must be', 'wmvc_win').' '.__($one_rule, 'wmvc_win');
+                            }
+                        }
+                    }
+                    elseif(function_exists('wmvc_validation_'.$wmvc_rule))
+                    {
+                        
+                      
+                       
+                        if(call_user_func('wmvc_validation_'.$wmvc_rule, $this, $rule['label'], $_POST[$rule['field']], $wmvc_rule_parameter) === FALSE)
+                        {
+                            if(isset($this->error_messages[$wmvc_rule]))
+                            {
+                                $this->messages[] = $this->error_messages[$wmvc_rule];
+                            }
+                            else
+                            {    
+                                $this->messages[] = __('Field', 'wmvc_win').' '.$rule['label'].' '.__('must be', 'wmvc_win').' '.__($wmvc_rule, 'wmvc_win');
                             }
                         }
                     }
@@ -150,7 +176,6 @@ class MVC_Form {
         if($success_message === NULL)
             $success_message = __('Successfully saved', 'wmvc_win');
 
-
         if(count($this->messages) == 0)
         {
             echo '<p '.$success_extra.'>'.$success_message.'</p>';
@@ -184,7 +209,6 @@ class MVC_Form {
 
         return join("\n", $this->messages);
     }
-
 
 }
 
@@ -299,6 +323,116 @@ if(!function_exists('wmvc_is_sockets_enabled'))
     }
 }
 
+/* validation rules */
+
+/*
+Rules List:
+
+is_numerical - is number field
+is_phone - is phone field
+is_email - is email field
+min_length[n] - min length (characters), where n is number
+max_length[n] - max length (characters), where n is number
+min_number[n] - min length (number), where n is number
+max_number[n] - max length (number), where n is number
+
+*/
+
+if(!function_exists('wmvc_validation_is_numerical'))
+{
+    function wmvc_validation_is_numerical($form = NULL, $label = NULL, $param = NULL)
+    {
+        $form->add_error_message('is_numerical', sprintf(__('Field %1$s: Numerical format required', 'wmvc_win'), $label));
+
+        return wmvc_is_intval($param);
+    }
+}
+
+if(!function_exists('wmvc_validation_is_phone'))
+{
+    function wmvc_validation_is_phone($form = NULL, $label = NULL, $param = NULL)
+    {
+        $form->add_error_message('is_phone', sprintf(__('Field %1$s: Wrong phone number format', 'wmvc_win'), $label));
+        
+        return wmvc_is_phone($param);
+    }
+}
+
+if(!function_exists('wmvc_validation_is_email'))
+{
+    function wmvc_validation_is_email($form = NULL, $label = NULL, $param = NULL)
+    {
+        $form->add_error_message('is_email', sprintf(__('Field %1$s: Wrong email format', 'wmvc_win'), $label));
+        
+        return wmvc_is_valid_email($param);
+    }
+}
+
+if(!function_exists('wmvc_validation_min_length'))
+{
+    function wmvc_validation_min_length($form = NULL, $label = NULL, $param = NULL, $arg='')
+    {
+
+        $form->add_error_message('min_length', sprintf(__('Field %1$s: Minimal length: %2$s', 'wmvc_win'), $label, $arg));
+       
+        if ( ! wmvc_is_intval($arg))
+		{
+			return FALSE;
+		}
+        
+		return ($arg <= strlen($param));
+        
+    }
+}
+
+if(!function_exists('wmvc_validation_max_length'))
+{
+    function wmvc_validation_max_length($form = NULL, $label = NULL, $param = NULL, $arg='')
+    {
+
+        $form->add_error_message('max_length', sprintf(__('Field %1$s: Maximal length:%2$s', 'wmvc_win'), $label, $arg));
+       
+        if ( ! wmvc_is_intval($arg))
+		{
+			return FALSE;
+		}
+        
+		return ($arg >= strlen($param));
+        
+    }
+}
+
+if(!function_exists('wmvc_validation_min_number'))
+{
+    function wmvc_validation_min_number($form = NULL, $label = NULL, $param = NULL, $arg='')
+    {
+
+        $form->add_error_message('min_number', sprintf(__('Field %1$s: Minimal number:%2$s', 'wmvc_win'), $label, $arg));
+       
+        if ( ! wmvc_is_intval($arg))
+		{
+			return FALSE;
+		}
+        
+        return intval($param) ? ($param >= $arg) : FALSE;
+    }
+}
+
+if(!function_exists('wmvc_validation_max_number'))
+{
+    function wmvc_validation_max_number($form = NULL, $label = NULL, $param = NULL, $arg='')
+    {
+
+        $form->add_error_message('max_number', sprintf(__('Field %1$s: Maximal number:%2$s', 'wmvc_win'), $label, $arg));
+       
+        if ( ! wmvc_is_intval($arg))
+		{
+			return FALSE;
+		}
+        
+        return intval($param) ? ($param <= $arg) : FALSE;
+    }
+}
 
 endif;
 
