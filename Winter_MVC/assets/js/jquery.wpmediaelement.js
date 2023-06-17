@@ -18,12 +18,16 @@ jQuery.fn.wpMediaElement = function (options)
     };
     
     var options = jQuery.extend(defaults, options);
-
-    if(typeof options.frame.title == 'undefined') {
+          
+    if(typeof wpmediaelement_parameters !== 'undefined' && typeof options.frame.title == 'undefined'){
+        options.frame.title = wpmediaelement_parameters.text.frame_title;
+    } else if(typeof options.frame.title == 'undefined') {
         options.frame.title = 'Select or Upload Media Of Your Chosen Persuasion';
     }
 
-    if(typeof options.frame.button == 'undefined') {
+    if(typeof wpmediaelement_parameters !== 'undefined' && typeof options.frame.button == 'undefined'){
+        options.frame.button = wpmediaelement_parameters.text.frame_button;
+    } else if(typeof options.frame.button == 'undefined') {
         options.frame.button = 'Use this media';
     }
 
@@ -61,7 +65,7 @@ jQuery.fn.wpMediaElement = function (options)
             },
             multiple: false
         });
-
+        
         options.frame.on( 'open', updateFrame ).state('library').on( 'select', selectImg );
         
 		options.addImgLink.on( 'click', function( e ) {

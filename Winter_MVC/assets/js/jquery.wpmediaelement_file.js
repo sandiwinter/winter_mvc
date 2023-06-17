@@ -15,14 +15,19 @@ jQuery.fn.wpMediaElementFile = function (options)
         imgIdInput: null,
         frame: {}
     };
-    
-    var options = jQuery.extend(defaults, options);
 
-    if(typeof options.frame.title == 'undefined') {
+    var options = jQuery.extend(defaults, options);
+     
+          
+    if(typeof wpmediaelement_file_parameters !== 'undefined' && typeof options.frame.title == 'undefined'){
+        options.frame.title = wpmediaelement_file_parameters.text.frame_title;
+    } else if(typeof options.frame.title == 'undefined') {
         options.frame.title = 'Select or Upload Media Of Your Chosen Persuasion';
     }
 
-    if(typeof options.frame.button == 'undefined') {
+    if(typeof wpmediaelement_file_parameters !== 'undefined' && typeof options.frame.button == 'undefined'){
+        options.frame.button = wpmediaelement_file_parameters.text.frame_button;
+    } else if(typeof options.frame.button == 'undefined') {
         options.frame.button = 'Use this media';
     }
 
@@ -49,7 +54,7 @@ jQuery.fn.wpMediaElementFile = function (options)
     function init_start()
     {
         console.log('init_start'+options.obj.attr('id'));
-    
+        
         options.frame = wp.media({
             title: options.frame.title,
             library: {

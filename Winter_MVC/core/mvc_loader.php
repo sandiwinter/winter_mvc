@@ -34,7 +34,7 @@ class MVC_Loader {
     public $db = NULL;
 
     public $plugin_directory = NULL;
-    
+
     public function __construct($plugin_directory = NULL)
     {
         $this->plugin_directory = $plugin_directory;
@@ -62,13 +62,22 @@ class MVC_Loader {
         wp_register_script( 'wpmediaelement_file',  plugins_url(plugin_basename(WINTER_MVC_PATH).'/assets/js/jquery.wpmediaelement_file.js'), array(), false, false );
         wp_register_script( 'wpmediaelement',  plugins_url(plugin_basename(WINTER_MVC_PATH).'/assets/js/jquery.wpmediaelement.js'), array(), false, false );
         wp_register_script( 'wpmediamultiple',  plugins_url(plugin_basename(WINTER_MVC_PATH).'/assets/js/jquery.wpmediamultiple.js'), array(), false, false );
+        $params = array(
+            'text' =>array(
+				'frame_title' => esc_html__('Select or Upload Media Of Your Chosen Persuasion', 'wpdirectorykit'),
+				'frame_button' => esc_html__('Use this media', 'wpdirectorykit'),
+			),
+        );
+		wp_localize_script('wpmediamultiple', 'wpmediamultiple_parameters', $params);
+		wp_localize_script('wpmediaelement', 'wpmediaelement_parameters', $params);
+		wp_localize_script('wpmediaelement_file', 'wpmediaelement_file_parameters', $params);
     }
     
     public function load_helper($filename)
     {
         if(empty($this->plugin_directory))
         {
-            $file = WINTER_MVC_PATH.'/../../application/helpers/'.sanitize_file_name(ucfirst($filename)).'.php';;
+            $file = WINTER_MVC_PATH.'/../../application/helpers/'.sanitize_file_name(ucfirst($filename)).'.php';
         }
         else
         {
@@ -130,7 +139,7 @@ class MVC_Loader {
 
     public function view($view_file, &$data, $output = TRUE)
     {
-      
+
         if(!empty($this->plugin_directory)) {
             $plugin = basename($this->plugin_directory);
         } else {
@@ -184,7 +193,7 @@ class MVC_Loader {
     }
 
     public function model($class)
-    {
+    { 
         if(empty($this->plugin_directory))
         {
             $file = WINTER_MVC_PATH.'/../../application/models/'.sanitize_file_name(ucfirst($class)).'.php';
