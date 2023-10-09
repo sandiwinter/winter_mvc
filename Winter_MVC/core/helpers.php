@@ -836,7 +836,7 @@ function wmvc_select_option($field_name, $options = array(), $selected = NULL, $
     if(is_array($options) && count($options) > 0)
     foreach($options as $key=>$val)
     {
-        $output.= '<option value="'.$key.'" '.($selected==$key?'selected':'').'>'.$val.'</option>';
+        $output.= '<option value="'.$key.'" '.($selected==$key&&$selected != ''?'selected':'').'>'.$val.'</option>';
     }
 
     $output.= '</select>';

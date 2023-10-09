@@ -85,6 +85,10 @@ wp-content\plugins\{your-plugin-name}\application\views\{your-plugin-name}\index
 
 # Changelog
 
+v3.4, 09-10-2023
+
+- fix compare part issue with ''==0, in old php return true
+
 v3.3, 17-06-2023
 
 Form validation
