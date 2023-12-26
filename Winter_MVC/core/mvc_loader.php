@@ -77,11 +77,11 @@ class MVC_Loader {
     {
         if(empty($this->plugin_directory))
         {
-            $file = WINTER_MVC_PATH.'/../../application/helpers/'.sanitize_file_name(ucfirst($filename)).'.php';
+            $file = WINTER_MVC_PATH.'/../../application/helpers/'.ucfirst(sanitize_file_name($filename)).'.php';
         }
         else
         {
-            $file = $this->plugin_directory.'application/helpers/'.sanitize_file_name(ucfirst($filename)).'.php';
+            $file = $this->plugin_directory.'application/helpers/'.ucfirst(sanitize_file_name($filename)).'.php';
         }
 
         if(file_exists($file))
@@ -92,11 +92,11 @@ class MVC_Loader {
     {
         if(empty($this->plugin_directory))
         {
-            $file = WINTER_MVC_PATH.'/../../application/controllers/'.sanitize_file_name(ucfirst($class)).'.php';
+            $file = WINTER_MVC_PATH.'/../../application/controllers/'.ucfirst(sanitize_file_name($class)).'.php';
         }
         else
         {
-            $file = $this->plugin_directory.'application/controllers/'.sanitize_file_name(ucfirst($class)).'.php';
+            $file = $this->plugin_directory.'application/controllers/'.ucfirst(sanitize_file_name($class)).'.php';
         }
 
         if(file_exists($file))
@@ -196,11 +196,11 @@ class MVC_Loader {
     { 
         if(empty($this->plugin_directory))
         {
-            $file = WINTER_MVC_PATH.'/../../application/models/'.sanitize_file_name(ucfirst($class)).'.php';
+            $file = WINTER_MVC_PATH.'/../../application/models/'.ucfirst(sanitize_file_name($class)).'.php';
         }
         else
         {
-            $file = $this->plugin_directory.'application/models/'.sanitize_file_name(ucfirst($class)).'.php';
+            $file = $this->plugin_directory.'application/models/'.ucfirst(sanitize_file_name($class)).'.php';
         }
         
 
