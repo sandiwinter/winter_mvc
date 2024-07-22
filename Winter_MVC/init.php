@@ -3,13 +3,13 @@
 /**
  * Winter_MVC library
  *
- * @version 3.3
+ * @version 3.5
  *
  * @author SWIT
  * @link https://github.com/sandiwinter/winter_mvc
  */
 
-$Winter_MVC_version_this = 3.3;
+$Winter_MVC_version_this = 3.5;
 
 global $Winter_MVC;
 
