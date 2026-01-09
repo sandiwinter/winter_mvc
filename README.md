@@ -85,6 +85,17 @@ wp-content\plugins\{your-plugin-name}\application\views\{your-plugin-name}\index
 
 # Changelog
 
+v3.6, 09-01-2026
+
+- Improve types select for media field
+- Form validation improve
+
+v3.5, 09-10-2024
+
+- Security fix
+
+- fix compare part issue with ''==0, in old php return true
+
 v3.4, 09-10-2023
 
 - fix compare part issue with ''==0, in old php return true

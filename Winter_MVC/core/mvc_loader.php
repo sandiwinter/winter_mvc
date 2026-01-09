@@ -139,8 +139,7 @@ class MVC_Loader {
 
     public function view($view_file, &$data, $output = TRUE)
     {
-
-        if(!empty($this->plugin_directory)) {
+        if(!empty($this->plugin_directory) && basename($this->plugin_directory) != '..') {
             $plugin = basename($this->plugin_directory);
         } else {
             $plugin = basename( plugin_dir_path(  dirname( __FILE__ , 3 ) ) );
